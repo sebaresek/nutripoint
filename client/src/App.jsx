@@ -18,7 +18,6 @@ import HomePage from './views/HomePage/HomePage';
 import DetailPage from './views/DetailPage/DetailPage';
 import PaymentSuccess from './views/PaymentSuccess/PaymentSuccess'; 
 import UserDashboard from './views/UserDashboard/UserDashboard';
-// REVISA SI ESTA RUTA TIENE LA "T":
 import CheckoutPage from './views/CheckoutPage/CheckoutPage'; 
 
 // Admin
@@ -26,6 +25,9 @@ import AdminLayout from './admin/AdminLayout/AdminLayout';
 import AdminDashboard from './admin/AdminDashboard/AdminDashboard';
 import AdminProducts from './admin/AdminProducts/AdminProducts';
 import AdminOrders from './admin/AdminOrders/AdminOrders';
+
+const API_URL = import.meta.env.VITE_API_URL;
+console.log("Mi API URL es:", API_URL);
 
 const INITIAL_CATEGORIES = [
     { id: 1, name: 'Proteínas', slug: 'proteinas', emoji: '💪🏼' },
@@ -79,7 +81,7 @@ const App = () => {
     const [user, loading] = useAuthState(auth);
 
     useEffect(() => {
-        fetch('http://localhost:3001/api/admin/products')
+        fetch(`${API_URL}/admin/products`)
             .then(res => res.json())
             .then(data => setProducts(data))
             .catch(err => console.error("Error API:", err));

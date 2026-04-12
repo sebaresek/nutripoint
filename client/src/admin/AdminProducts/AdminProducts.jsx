@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Search, Edit3, Trash2, Image as ImageIcon, Save, X, CheckCircle2, AlertCircle, Loader2, ChevronDown } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import styles from './AdminProducts.module.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminProducts = () => {
 const { products, setProducts, categories } = useOutletContext();
@@ -78,8 +79,8 @@ const { products, setProducts, categories } = useOutletContext();
         try {
             const isEditing = !!editingId;
             const url = isEditing 
-                ? `http://localhost:3001/api/admin/products/${editingId}`
-                : 'http://localhost:3001/api/admin/products';
+                ? `${API_URL}/admin/products/${editingId}`
+                : `${API_URL}/admin/products`;
             const method = isEditing ? 'PUT' : 'POST';
 
 
@@ -118,7 +119,7 @@ const { products, setProducts, categories } = useOutletContext();
         // 1. Obtenemos el token del almacenamiento local
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch(`http://localhost:3001/api/admin/products/${id}`, { method: 'DELETE',
+            const res = await fetch(`${API_URL}/admin/products/${id}`, { method: 'DELETE',
                 // 2. Agregamos el segundo parámetro a fetch con el método y los headers
                 headers: {
                 'Authorization': `Bearer ${token}`,

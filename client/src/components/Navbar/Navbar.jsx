@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import LoginModal from '../LoginModal/LoginModal';
 import styles from './Navbar.module.css'; // Importación como módulo
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -28,7 +29,7 @@ const Navbar = () => {
         const delayDebounceFn = setTimeout(async () => {
             try {
                 const response = await fetch(
-                    `http://localhost:3001/api/admin/products/search?q=${searchTerm}`,
+                    `${API_URL}/admin/products/search?q=${searchTerm}`,
                     { signal: controller.signal }
                 );
                 const data = await response.json();

@@ -6,6 +6,7 @@ import { auth } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { validateField, validateFullForm, formatInput } from '../../utils/validators';
 import styles from './CheckoutPage.module.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function CheckoutPage({ items = [] }) {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ export default function CheckoutPage({ items = [] }) {
     useEffect(() => {
         if (user) {
             setIsLoadingProfile(true);
-            fetch(`http://localhost:3001/api/users/profile/${user.uid}`) // Asegúrate de que la URL sea correcta
+            fetch(`${API_URL}/users/profile/${user.uid}`) // Asegúrate de que la URL sea correcta
                 .then(res => res.json())
                 .then(data => {
                     if (data && data.address && data.postalCode) {
@@ -67,7 +68,7 @@ export default function CheckoutPage({ items = [] }) {
             if (!isEditing && formData.postalCode && formData.postalCode.length === 4) {
                 setIsCalculatingShipping(true);
                 try {
-                    const response = await fetch('http://localhost:3001/api/shipping/estimate', {
+                    const response = await fetch(`${API_URL}/shipping/estimate`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -125,7 +126,7 @@ export default function CheckoutPage({ items = [] }) {
                     notes: formData.notes
                 };
 
-                const response = await fetch('http://localhost:3001/api/users/sync', {
+                const response = await fetch(`${API_URL}/users/sync`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -160,7 +161,7 @@ export default function CheckoutPage({ items = [] }) {
 
             setIsSubmitting(true);
             try {
-                const res = await fetch('http://localhost:3001/api/orders', {
+                const res = await fetch(`${API_URL}/orders`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

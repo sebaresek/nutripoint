@@ -5,6 +5,7 @@ import {
     CheckCircle2, AlertCircle, DollarSign, Phone
 } from 'lucide-react';
 import styles from './AdminOrders.module.css';
+const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -20,7 +21,7 @@ const AdminOrders = () => {
     useEffect(() => {
         const fetchOrders = async () => {
             try {
-                const res = await fetch('http://localhost:3001/api/orders');
+                const res = await fetch(`${API_URL}/orders`);
                 if (!res.ok) throw new Error("Error al obtener pedidos");
                 const data = await res.json();
                 setOrders(data);
@@ -51,7 +52,7 @@ const AdminOrders = () => {
         setStatus({ show: true, message: 'Actualizando pedido...', type: 'loading' });
 
         try {
-            const res = await fetch(`http://localhost:3001/api/orders/${orderId}/tracking`, {
+            const res = await fetch(`${API_URL}/orders/${orderId}/tracking`, {
                 method: 'PATCH',
                 headers: { 
                     'Authorization': `Bearer ${token}`,
@@ -85,7 +86,7 @@ const AdminOrders = () => {
     const handleDelete = async (orderId) => {
         const token = localStorage.getItem('adminToken');
         try {
-            const res = await fetch(`http://localhost:3001/api/orders/${orderId}`, {
+            const res = await fetch(`${API_URL}/orders/${orderId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

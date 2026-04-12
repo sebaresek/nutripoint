@@ -5,6 +5,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { motion, AnimatePresence } from "framer-motion";
 import { validateField, validateFullForm, formatInput } from '../../utils/validators'; 
 import styles from './UserDashboard.module.css';
+const API_URL = import.meta.env.VITE_API_URL;
+
 import { 
     User, 
     Package, 
@@ -53,7 +55,7 @@ const UserDashboard = () => {
             if (user) {
                 setFetchingData(true);
                 try {
-                    const profileRes = await axios.get(`http://localhost:3001/api/users/profile/${user.uid}`);
+                    const profileRes = await axios.get(`${API_URL}/users/profile/${user.uid}`);
                     
                     if (profileRes.data) {
                         const data = {
@@ -70,7 +72,7 @@ const UserDashboard = () => {
                         setOriginalData(data);
                     }
 
-                    const ordersRes = await axios.get(`http://localhost:3001/api/users/orders/${user.uid}`);
+                    const ordersRes = await axios.get(`${API_URL}/users/orders/${user.uid}`);
                     setOrders(ordersRes.data);
                 } catch (err) {
                     console.error("Error cargando datos:", err);
@@ -111,7 +113,7 @@ const UserDashboard = () => {
 
             setIsSaving(true);
             try {
-                await axios.post('http://localhost:3001/api/users/sync', {
+                await axios.post(`${API_URL}/users/sync`, {
                     uid: user.uid,
                     email: user.email,
                     fullName: formData.name, 

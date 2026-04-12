@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import styles from './CartSidebar.module.css'; // Importación como módulo
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CartSidebar = () => {
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ const CartSidebar = () => {
 
     useEffect(() => {
         if (user && isCartOpen) {
-            fetch(`http://localhost:3001/api/users/profile/${user.uid}`)
+            fetch(`${API_URL}/users/profile/${user.uid}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data) {
@@ -101,48 +102,6 @@ const CartSidebar = () => {
         calculateShipping();
     }, [contactData.postalCode, cartItems, cartTotal]);
 
-    // const handleMainAction = async () => {
-    //     const isProfileComplete = contactData.phone && contactData.address && contactData.postalCode && contactData.city;
-
-    //     if (!isProfileComplete) {
-    //         toggleCart();
-    //         navigate('/checkout');
-    //         return;
-    //     }
-
-    //     setIsProcessing(true);
-    //     try {
-    //         const response = await fetch('http://localhost:3001/api/orders', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ 
-    //                 userId: user?.uid,
-    //                 ...contactData,
-    //                 shippingCost: shippingCost,
-    //                 items: cartItems.map(item => ({
-    //                     id: item.id,
-    //                     title: item.title || item.name,
-    //                     price: item.price,
-    //                     quantity: item.quantity,
-    //                     flavor: item.selectedFlavor
-    //                 }))
-    //             })
-    //         });
-
-    //         const data = await response.json();
-    //         if (data.init_point) {
-    //             window.location.href = data.init_point;
-    //         } else {
-    //             toggleCart();
-    //             navigate('/checkout');
-    //         }
-    //     } catch (err) {
-    //         toggleCart();
-    //         navigate('/checkout');
-    //     } finally {
-    //         setIsProcessing(false);
-    //     }
-    // };
     const handleMainAction = () => {
         toggleCart(); // Cierra el sidebar
         navigate('/checkout'); // Redirige siempre al checkout

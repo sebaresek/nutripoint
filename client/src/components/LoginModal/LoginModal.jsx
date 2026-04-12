@@ -2,47 +2,20 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import styles from './LoginModal.module.css'; // Importación del módulo
+const API_URL = import.meta.env.VITE_API_URL;
 
 const LoginModal = ({ isOpen, onClose }) => {
     const { loginWithGoogle } = useAuth();
 
     if (!isOpen) return null;
-
-    // const handleGoogleLogin = async () => {
-    //     try {
-    //         const result = await loginWithGoogle(); 
-    //         const userEmail = result.user.email;
-    //         console.log("Login Firebase exitoso:", userEmail);
-
-    //         if (userEmail === 'nutripoint.ar@gmail.com') {
-    //             const response = await fetch('http://localhost:3001/api/auth/login-admin', {
-    //                 method: 'POST',
-    //                 headers: { 'Content-Type': 'application/json' },
-    //                 body: JSON.stringify({ email: userEmail })
-    //             });
-
-    //             const data = await response.json();
-    //             console.log("Respuesta del backend:", data); // Aquí verás por qué llega null
-
-    //             if (data.token) {
-    //                 localStorage.setItem('adminToken', data.token);
-    //                 console.log("Token guardado correctamente");
-    //             } else {
-    //                 console.error("El backend no devolvió un token:", data.error);
-    //             }
-    //         }
-    //         onClose();
-    //     } catch (error) {
-    //         console.error("Error en el proceso de login:", error);
-    //     }
-    // };
+    
     const handleGoogleLogin = async () => {
         try {
             const result = await loginWithGoogle(); 
             const userEmail = result.user.email;
 
             if (userEmail === 'nutripoint.ar@gmail.com') {
-                const response = await fetch('http://localhost:3001/api/auth/login-admin', {
+                const response = await fetch(`${API_URL}/auth/login-admin`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: userEmail })
