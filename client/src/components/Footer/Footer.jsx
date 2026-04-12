@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Mail, ShieldCheck } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Mail, ShieldCheck, MessageCircle } from 'lucide-react';
 import styles from './Footer.module.css';
 
 const Footer = () => {
@@ -10,9 +10,10 @@ const Footer = () => {
                     <h2 className={styles.brandLogo}>NutriPoint<span>©</span></h2>
                     <p>Tu plataforma de confianza. Rápido, seguro y siempre al mejor precio.</p>
                     <div className={styles.socialLinks}>
-                        <a href="#"><Facebook size={20} /></a>
-                        <a href="#"><Twitter size={20} /></a>
-                        <a href="#"><Instagram size={20} /></a>
+                        <a href="https://www.instagram.com/nutripoint.ar/" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
+                        <a href="https://www.facebook.com/profile.php?id=61572079501408" target="_blank" rel="noopener noreferrer"><Facebook size={20} /></a>
+                        <a href="mailto:nutripoint.ar@gmail.com" target="_blank" rel="noopener noreferrer"><Mail size={20} /></a>
+                        {/* <a href="https://wa.link/gnv3mc "><MessageCircle size={20} /></a> */}
                     </div>
                 </div>
 
