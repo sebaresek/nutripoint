@@ -96,13 +96,15 @@
         margin-top: 5px !important;
     }
     
-    .gridResponsive { grid-template-columns: repeat(2, 1fr); }
+    .gridResponsive { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
     
     .categoryNav {
         border-radius: 20px;
     }
 }
 
-@media (max-width: 400px) {
-    .gridResponsive { grid-template-columns: 1fr; }
+@media (max-width: 350px) { /* Bajamos el límite de 400 a 350 o menos */
+    .gridResponsive { 
+        grid-template-columns: repeat(2, 1fr); /* Forzamos 2 columnas incluso aquí */
+    }
 }
