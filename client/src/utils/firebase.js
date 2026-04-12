@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDcrOvRBWD2HgIIwjd2xycjsrKnxlGZhTg",
-    authDomain: "subflow-marketplace.firebaseapp.com",
-    projectId: "subflow-marketplace",
-    storageBucket: "subflow-marketplace.firebasestorage.app",
-    messagingSenderId: "162293764842",
-    appId: "1:162293764842:web:e8405ebdd286491d4cbd93",
-    measurementId: "G-F1X0RLYQ4S"
+  apiKey: "AIzaSyA9ZmBLIIy01ks3jwjTsWBvN7F6S0Q1TeQ",
+  authDomain: "nutripoint-6c551.firebaseapp.com",
+  projectId: "nutripoint-6c551",
+  storageBucket: "nutripoint-6c551.firebasestorage.app",
+  messagingSenderId: "773617570402",
+  appId: "1:773617570402:web:1292e0816e92141602f73b",
+  measurementId: "G-68EE3V8PEH"
 };
 
 const app = initializeApp(firebaseConfig);
