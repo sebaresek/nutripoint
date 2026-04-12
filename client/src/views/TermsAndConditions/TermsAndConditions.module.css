@@ -1,0 +1,99 @@
+.container {
+    max-width: 1000px;
+    margin: 60px auto;
+    padding: 60px;
+    background: #111;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    color: #aaa;
+    line-height: 1.8;
+    font-family: 'Inter', sans-serif;
+}
+
+.mainTitle {
+    color: #fff;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+/* Reutilizando el acento naranja para consistencia */
+.mainTitle::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #ff6b00;
+    margin: 15px auto 0;
+    border-radius: 2px;
+}
+
+.section {
+    margin-bottom: 40px;
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.subTitle {
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Pequeño detalle decorativo a la izquierda de cada subtítulo */
+.subTitle::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: #ff6b00;
+    border-radius: 2px;
+}
+
+.section p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+.section strong {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Estilo para los enlaces dentro del texto */
+.section strong:hover {
+    color: #ff6b00;
+    transition: color 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+        padding: 30px 20px;
+    }
+    
+    .mainTitle {
+        font-size: 2rem;
+    }
+
+    .subTitle {
+        font-size: 1.2rem;
+    }
+
+    .section p {
+        font-size: 0.95rem;
+        text-align: left;
+    }
+}

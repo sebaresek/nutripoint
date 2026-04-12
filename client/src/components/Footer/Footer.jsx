@@ -28,9 +28,9 @@ const Footer = () => {
                 <div className={styles.footerLinks}>
                     <h4>Legal</h4>
                     <ul>
-                        <li><a href="#">Términos de Servicio</a></li>
-                        <li><a href="#">Política de Privacidad</a></li>
-                        <li><a href="#">Reembolsos</a></li>
+                        <li><a href="/preguntas-frecuentes">Centro de Ayuda</a></li>
+                        <li><a href="/envios-y-devoluciones">Envíos y Devoluciones</a></li>
+                        <li><a href="/terminos-y-condiciones">Términos y Condiciones</a></li>
                     </ul>
                 </div>
 
