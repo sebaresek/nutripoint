@@ -65,27 +65,45 @@
     }
 }
 
+/* ... (Todo lo anterior igual hasta llegar a las Media Queries) ... */
+
 @media (max-width: 768px) {
     .heroSection {
-        padding: 1.5rem 1rem !important;
+        padding: 1rem 0.75rem !important; /* Menos espacio para que la imagen sea protagonista */
         min-height: auto;
     }
 
     .mainBanner {
-        /* Relación de aspecto más vertical para móviles */
-        aspect-ratio: 4 / 3; 
-        border-radius: 12px;
+        /* IMPORTANTE: Quitamos el aspect-ratio fijo */
+        aspect-ratio: 4 / 5;
+        height: auto;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .mainBanner img {
+        /* Esto asegura que la imagen vertical dicte el alto total */
+        height: auto;
+        object-fit: contain; /* Cambiamos cover por contain para que NO recorte nada */
     }
 
     .glowEffect {
-        width: 300px;
-        height: 300px;
-        filter: blur(80px);
+        width: 250px;
+        height: 250px;
+        filter: blur(60px);
     }
 }
 
 @media (max-width: 480px) {
     .mainBanner {
-        aspect-ratio: 1 / 1; /* Cuadrado en celulares muy pequeños */
+        /* Para celulares muy chicos, eliminamos cualquier restricción */
+        aspect-ratio: auto;
+    }
+    
+    .mainBanner img {
+        /* Si la imagen es muy larga, le ponemos un tope para que no scrollee infinito */
+        max-height: 65vh; 
+        object-fit: cover; 
+        /* Usamos cover pero sin aspect-ratio para que se vea la mayor parte posible */
     }
 }
