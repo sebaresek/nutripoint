@@ -220,7 +220,7 @@ export default function CheckoutPage({ items = [] }) {
                                         </div>
                                         <div className={styles.inputGroup}>
                                             <label className={styles.label}>Código Postal</label>
-                                            <input name="postalCode" value={formData.postalCode} onChange={handleChange} className={`${styles.input} ${errors.postalCode ? styles.inputError : ''}`} maxLength={4} />
+                                            <input name="postalCode" placeholder="1904" value={formData.postalCode} onChange={handleChange} className={`${styles.input} ${errors.postalCode ? styles.inputError : ''}`} maxLength={4} />
                                             {errors.postalCode && <span className={styles.errorMessage}>{errors.postalCode}</span>}
                                         </div>
                                     </div>

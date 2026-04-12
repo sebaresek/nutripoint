@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, Loader2 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import LoginModal from '../LoginModal/LoginModal'
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -11,7 +12,10 @@ const CartSidebar = () => {
     const navigate = useNavigate();
     const { isCartOpen, toggleCart, cartItems, updateQuantity, removeFromCart, cartTotal } = useCart();
     const [user] = useAuthState(auth);
-    
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    // Estados nuevos
+    const [showLoginModal, setShowLoginModal] = useState(false);
+    const [showAuthWarning, setShowAuthWarning] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [isCalculatingShipping, setIsCalculatingShipping] = useState(false);
     const [shippingCost, setShippingCost] = useState(0);
@@ -103,12 +107,21 @@ const CartSidebar = () => {
     }, [contactData.postalCode, cartItems, cartTotal]);
 
     const handleMainAction = () => {
-        toggleCart(); // Cierra el sidebar
-        navigate('/checkout'); // Redirige siempre al checkout
-    };
+            if (!user) {
+                // En lugar de abrir el modal directo, mostramos el renderizado de aviso
+                setShowAuthWarning(true);
+            } else {
+                toggleCart();
+                navigate('/checkout');
+            }
+        };
 
     return (
         <>
+            <LoginModal 
+                isOpen={showLoginModal} 
+                onClose={() => setShowLoginModal(false)} 
+            />
             <div 
                 className={`${styles.cartOverlay} ${isCartOpen ? styles.active : ''}`} 
                 onClick={toggleCart}
@@ -173,11 +186,37 @@ const CartSidebar = () => {
                                 <strong> ${(cartTotal + shippingCost).toLocaleString('es-AR')}</strong>
                             </div>
 
-                            <button className={styles.checkoutBtn} onClick={handleMainAction}
-                            // disabled={isProcessing || isCalculatingShipping} 
+                            {/* <button className={styles.checkoutBtn} onClick={handleMainAction}
                             >
                                 {isProcessing ? <Loader2 size={20} className={styles.spin} /> : 'Pagar con Mercado Pago'}
-                            </button>
+                            </button> */}
+                            {/* RENDERIZADO CONDICIONAL DEL AVISO */}
+                            {showAuthWarning ? (
+                                <div className={styles.authWarning}>
+                                    <p>Debes iniciar sesión para finalizar tu compra</p>
+                                    <div className={styles.authActions}>
+                                        <button 
+                                            className={styles.loginConfirmBtn} 
+                                            onClick={() => {
+                                                setShowAuthWarning(false);
+                                                setShowLoginModal(true);
+                                            }}
+                                        >
+                                            Iniciar Sesión
+                                        </button>
+                                        <button 
+                                            className={styles.cancelBtn} 
+                                            onClick={() => setShowAuthWarning(false)}
+                                        >
+                                            Volver
+                                        </button>
+                                    </div>
+                                </div>
+                            ) : (
+                                <button className={styles.checkoutBtn} onClick={handleMainAction}>
+                                    Pagar con Mercado Pago
+                                </button>
+                            )}
                         </div>
                     )}
                 </div>

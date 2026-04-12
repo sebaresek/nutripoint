@@ -24,16 +24,11 @@ const LoginModal = ({ isOpen, onClose }) => {
                 const data = await response.json();
                 if (data.token) {
                     localStorage.setItem('adminToken', data.token);
-                    // Si quieres que apenas se loguee lo mande al panel:
-                    // window.location.href = '/admin'; 
                 }
-            } else {
-                // SI NO ES EL ADMIN: Lo deslogueamos de Firebase por seguridad
-                // para que no intente quedarse en rutas protegidas del front
-                await logout(); 
-                alert("No tienes permisos de administrador");
-            }
-            onClose();
+            } 
+            // IMPORTANTE: El cierre debe ser manual aquí después del await
+            // Esto evita el conflicto de la pantalla negra
+            onClose(); 
         } catch (error) {
             console.error("Error en el proceso de login:", error);
         }
