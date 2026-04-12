@@ -1,0 +1,91 @@
+.heroSection {
+    padding: 3rem 1rem !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 2rem;
+    position: relative;
+    overflow: hidden; /* Evita que el glow genere scroll */
+}
+
+.heroBannerContainer {
+    width: 100%;
+    max-width: 1200px;
+    z-index: 20;
+}
+
+.mainBanner {
+    width: 100%;
+    /* Relación de aspecto para escritorio */
+    aspect-ratio: 16 / 6; 
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.mainBanner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.bannerOverlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.glowEffect {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: var(--primary, #f97316); /* Fallback a naranja si no hay variable */
+    filter: blur(150px);
+    opacity: 0.15;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+
+/* ============================= */
+/* RESPONSIVIDAD */
+/* ============================= */
+
+@media (max-width: 1024px) {
+    .mainBanner {
+        aspect-ratio: 16 / 7;
+    }
+}
+
+@media (max-width: 768px) {
+    .heroSection {
+        padding: 1.5rem 1rem !important;
+        min-height: auto;
+    }
+
+    .mainBanner {
+        /* Relación de aspecto más vertical para móviles */
+        aspect-ratio: 4 / 3; 
+        border-radius: 12px;
+    }
+
+    .glowEffect {
+        width: 300px;
+        height: 300px;
+        filter: blur(80px);
+    }
+}
+
+@media (max-width: 480px) {
+    .mainBanner {
+        aspect-ratio: 1 / 1; /* Cuadrado en celulares muy pequeños */
+    }
+}

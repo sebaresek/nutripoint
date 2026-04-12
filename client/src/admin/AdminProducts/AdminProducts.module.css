@@ -1,0 +1,510 @@
+/* ============================= */
+/* ALERTAS (STATUS TOAST) */
+/* ============================= */
+
+.status-toast {
+    position: fixed;
+    top: 25px;
+    right: 5rem;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    color: white;
+    /* --- MEJORAS DE LEGIBILIDAD --- */
+    /* 1. Subimos la opacidad del fondo (de 0.4 a 0.9 o incluso 1) */
+    background: rgba(19, 19, 19, 0.979) !important; 
+    /* 2. Aumentamos el desenfoque detrás de la alerta */
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
+    /* 3. Borde un poco más visible para definir límites */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    /* 4. Sombra más oscura y amplia para dar profundidad */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    min-width: 320px;
+    font-weight: 500; /* Texto un poquito más grueso */
+}
+
+/* Asegúrate de que los textos dentro tengan buen contraste */
+.status-toast p {
+    margin: 0;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Sombra suave al texto */
+}
+
+.success { border-left: 4px solid #22c55e; }
+.error { border-left: 4px solid #ef4444; }
+.loading { border-left: 4px solid var(--primary); }
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Animación de entrada suave */
+.animate-slide-in {
+    animation: slideIn 0.4s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ============================= */
+/* LISTADO PRINCIPAL */
+/* ============================= */
+
+.list-view {
+  animation: fade-in 0.3s ease;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.text-muted {
+  color: #888;
+}
+
+.add-btn {
+  margin-top: 25px !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary);
+  color: black;
+  padding: 0.8rem 1.2rem;
+  border-radius: 12px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* ============================= */
+/* BUSCADOR */
+/* ============================= */
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: #111;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.search-box input {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+}
+
+
+/* ============================= */
+/* TABLA DE PRODUCTOS */
+/* ============================= */
+
+.items-table {
+  background: #111;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-weight: 600;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Info producto */
+.item-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.item-img-preview {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  background: #222;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-img-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Acciones */
+.item-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ============================= */
+/* BOTONES */
+/* ============================= */
+
+.item-actions button {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background: rgba(255,255,255,0.05); */
+  border: none;
+  /* color: #888; */
+  cursor: pointer;
+}
+
+.saveBtn {
+  background: rgba(255,255,255,0.05);
+  border: none;
+  color: #dddddd;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.saveBtn:hover {
+    filter: brightness(1.2);
+    background: #4494ef;
+    color: white;
+}
+
+.saveBtn:disabled {
+    opacity: 0.5;
+}
+
+
+.deleteBtn {
+  background: rgba(239, 68, 68, 0.1);
+  border: none;
+  color: #ef4444;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.deleteBtn:hover {
+  background: #ef4444;
+  color: white;
+}
+
+/* ============================= */
+/* MODAL */
+/* ============================= */
+
+/* TEXTAREA DESCRIPCIÓN */
+.form-group textarea {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.2);
+  color: white;
+  outline: none;
+  resize: none; /* opcional, queda más prolijo */
+}
+
+/* AdminProducts.module.css */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  /* background: rgba(0, 0, 0, 0.85); */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Esto debería centrarlo verticalmente */
+  z-index: 1000;
+  padding: 2rem;
+  backdrop-filter: blur(4px); /* Opcional: mejora el efecto 'glass' */
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  padding: 2.5rem;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #111 !important;
+  
+  /* CAMBIOS CLAVE AQUÍ */
+  margin: auto; /* Refuerza el centrado en flex containers */
+  max-height: 90vh; /* Un poco más de aire */
+  display: flex;
+  flex-direction: column;
+  
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Botón cerrar */
+.close-btn-top {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: #555;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn-top:hover {
+  color: #fff;
+  transform: rotate(90deg);
+  transition: 0.2s;
+}
+
+
+/* ============================= */
+/* FORMULARIO */
+/* ============================= */
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: white;
+  outline: none;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.03);
+  color: white;
+  outline: none;
+}
+
+.custom-select option {
+  background-color: #1a1a1a;
+  color: white;
+
+}
+
+/* Quitar flechas en inputs number */
+.no-arrows::-webkit-inner-spin-button,
+.no-arrows::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Botón guardar */
+.save-btn {
+  background: var(--primary);
+  color: black;
+  padding: 1rem;
+  border-radius: 12px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  transition: 0.2s;
+}
+
+.save-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0, 0, 0, 0.7);  */
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 11000;
+}
+
+.confirmModal {
+    background: #121212; 
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+
+.modalButtons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.cancelBtn {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.confirmBtn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.confirmBtn:hover { background: #dc2626; }
+
+
+
+
+/******** CATEGORÍA PERSONALIZADA SELECT MENU  */
+.select-menu {
+    width: 100%;
+    position: relative;
+}
+
+.select-btn {
+    display: flex;
+    height: 45px; /* Ajustado para tu formulario */
+    background: rgba(255, 255, 255, 0.05); /* Estilo glass */
+    padding: 0 15px;
+    font-size: 14px;
+    border-radius: 8px;
+    align-items: center;
+    cursor: pointer;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.select-btn i {
+    font-size: 20px;
+    transition: 0.3s;
+}
+
+.active .select-btn i {
+    transform: rotate(-180deg);
+}
+
+/* Lista de Opciones */
+.options {
+    position: absolute;
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    background: #1a1a1a; /* Fondo oscuro para el admin */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: none;
+    z-index: 100;
+}
+
+.active .options {
+    display: block;
+    animation: fadeIn 0.2s ease;
+}
+
+.option {
+    display: flex;
+    height: 40px;
+    cursor: pointer;
+    padding: 0 12px;
+    border-radius: 8px;
+    align-items: center;
+    transition: background 0.2s;
+}
+
+.option:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.option i {
+    font-size: 18px;
+    margin-right: 10px;
+    color: var(--primary-color);
+}
+
+.option-text {
+    font-size: 14px;
+    color: #eee;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.iconNormal {
+    transition: transform 0.3s ease;
+    color: #ccc; /* Ajusta el color a tu diseño glass */
+}
+
+.iconRotate {
+    transition: transform 0.3s ease;
+    transform: rotate(-180deg);
+    color: var(--primary-color); /* O el color que prefieras al activar */
+}
+
+/******** CATEGORÍA PERSONALIZADA SELECT MENU HASTA ACA*/

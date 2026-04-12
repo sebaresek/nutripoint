@@ -1,0 +1,616 @@
+/* UserDashboard.module.css */
+
+:root {
+  --dashboard-bg: #0a0a0a;
+  --card-bg: #171717;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-orange: #f97316;
+  --accent-blue: #3b82f6;
+  --border-color: #262626;
+}
+
+/* Historial de Pedidos COLUMNA POR COLUMNA NO BORRAR*/
+.ordersList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* .orderProductsList{ 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    column-gap: 1.5rem;
+    align-items: start;
+    width: 100%;
+} */
+
+/* IMPORTANTE: En móviles debe volver a ser 1 sola columna */
+@media (max-width: 900px) {
+    .ordersList {
+        grid-template-columns: 1fr;
+    }
+}
+@media (min-width: 768px) {
+  .orderCardContent {
+    flex-direction: column; /* Cambiado de row a column para que quepa en la grilla de 2 */
+    align-items: flex-start;
+  }
+}
+
+
+.dashboardContainer {
+  background-color: var(--dashboard-bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  width: 100%;
+}
+
+.mainContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+}
+
+.dashboardHeader {
+  margin-bottom: 3rem;
+}
+
+.dashboardTitle {
+  font-style: italic;
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+  margin: 0;
+  color: #fff;
+}
+
+.dashboardSubtitle {
+  color: #475569;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+}
+
+.dashboardGrid {
+  display: grid;
+  grid-template-cols: 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.inputError {
+    border-color: #ff4d4d !important;
+    background-color: #fffafa;
+}
+
+.errorText {
+    color: #ff4d4d;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: block;
+    font-weight: 500;
+}
+
+.accent {
+  color: var(--accent-orange);
+  font-style: italic;
+}
+
+
+@media (min-width: 1024px) {
+  .dashboardGrid {
+    grid-template-cols: 350px 1fr;
+  }
+}
+
+/* Tarjeta de Usuario */
+.userCard {
+  /* background-color: var(--card-bg); */
+  background-color: #1717173b;
+  border: 1px solid #121212;
+  padding: 2rem;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.cardTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.orangeIndicator {
+  width: 6px;
+  height: 24px;
+  background-color: var(--accent-orange);
+  border-radius: 4px;
+}
+
+.blueIndicator {
+  width: 6px;
+  height: 24px;
+  background-color: var(--accent-blue);
+  border-radius: 4px;
+}
+
+/* Contenedor de los ítems de datos */
+.dataGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Crea dos columnas de igual ancho */
+  gap: 1.5rem; /* Espacio entre las columnas y filas */
+  margin-bottom: 2rem;
+}
+
+/* Opcional: Asegurar que los ítems ocupen bien su espacio */
+.dataItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dataRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Divide la fila en dos */
+    gap: 1rem;
+}
+
+.subSectionTitle {
+    font-size: 1.25rem;
+    color: #fff; /* O el color que uses para resaltar */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* .divider {
+    height: 1px;
+    background: #262626;
+    margin: 1.5rem 0;
+} */
+
+/* En móviles, que la fila vuelva a ser una columna */
+@media (max-width: 640px) {
+    .dataRow {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Responsive: Si la pantalla es pequeña (celular), que vuelvan a estar uno abajo del otro */
+@media (max-width: 600px) {
+  .dataGroup {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dataItem {
+  margin-bottom: 1.5rem;
+}
+
+.dataLabel {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #52525b;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.dataValue { 
+  font-weight: 600; 
+  color: #e9e9e9; 
+  border: 1px solid var(--border-color);
+  background-color: #171717;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+}
+
+.editProfileBtn {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #fff;
+  color: #000;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.orderItemCard {
+    background-color: #121212;
+    break-inside: avoid; 
+    margin-bottom: 1.5rem; /* Espacio hacia abajo */
+    background-color: #121212;
+    border: 1px solid var(--border-color);
+    padding: 2rem;
+    border-radius: 1.25rem;
+}
+
+.orderCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.editInput {
+  width: 100%;
+  background: #262626;
+  border: 1px solid #444;
+  color: white;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.editInput:focus {
+  border-color: var(--accent-orange);
+}
+
+.editActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.saveBtn {
+  flex: 1;
+  background-color: var(--accent-orange);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  padding: 0.8rem;
+  background: transparent;
+  border: 1px solid #444;
+  color: #94a3b8;
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+
+/* # --- BLOQUE DE ALERTA --- */ 
+
+.status-toast {
+    position: fixed;
+    top: 7rem !important;
+    right: 1rem;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    border-radius: 12px;
+    color: white;
+    /* --- MEJORAS DE LEGIBILIDAD --- */
+    /* 1. Subimos la opacidad del fondo (de 0.4 a 0.9 o incluso 1) */
+    background: rgba(19, 19, 19, 0.979) !important; 
+    /* 2. Aumentamos el desenfoque detrás de la alerta */
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
+    /* 3. Borde un poco más visible para definir límites */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    /* 4. Sombra más oscura y amplia para dar profundidad */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    min-width: 320px;
+    font-weight: 500; /* Texto un poquito más grueso */
+}
+
+.status-toast p {
+    margin: 0;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5); /* Sombra suave al texto */
+}
+
+.success { border-left: 4px solid #22c55e; }
+.error { border-left: 4px solid #ef4444; }
+.loading { border-left: 4px solid var(--primary); }
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Animación de entrada suave */
+.animate-slide-in {
+    animation: slideIn 0.4s ease-out forwards;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translate(-50%, -20px); }
+    to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* --- AJUSTE PARA CELULARES --- */
+@media (max-width: 768px) {
+    .status-toast {
+        right: auto;      /* Quitamos la posición a la derecha */
+        left: 50%;        /* Lo movemos al centro horizontal */
+        transform: translateX(-50%); /* Truco para centrar perfectamente */
+        min-width: 90%;   /* Que ocupe casi todo el ancho del cel */
+        width: max-content;
+        top: 5rem;        /* Un poco más arriba en móviles si prefieres */
+    }
+}
+
+/* # --- BLOQUE DE ALERTA --- */ 
+
+
+@media (min-width: 768px) {
+  .orderCardContent {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.orderId {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1e293b;
+  margin-right: 1rem;
+}
+
+.statusBadge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  border: 1px solid;
+}
+
+.statusEnviado {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.statusCompletado{
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.statusPending {
+  background: rgba(234, 179, 8, 0.1);
+  color: #eab308;
+  border-color: rgba(234, 179, 8, 0.2);
+}
+
+.trackingBox {
+  background-color: #171717;
+  padding: 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid #262626;
+  min-width: 250px;
+}
+
+.trackingLabel {
+  color: #2563eb;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.trackingValue {
+  font-size: 1.4rem;
+  margin-right: 0.5rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.copyBtn {
+  background: #262626;
+  border: none;
+  color: #94a3b8;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+/* Animaciones y Estados */
+.loadingState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #0a0a0a;
+}
+
+/* El comentario ahora está correctamente cerrado */
+
+/* Contenedor para poner inputs lado a lado */
+.inputGroupRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
+/* Información de fecha y tracking */
+.orderMetaInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.trackingInfo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    width: fit-content; /* El ancho será igual al contenido interno */
+    margin-bottom: 1rem; 
+}
+
+/* Fila de producto más grande */
+.productRowLarge {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.productRowLarge:last-child {
+    border-bottom: none;
+}
+
+.productImageWrapperLarge {
+    position: relative;
+    width: 80px;  /* Tamaño aumentado */
+    height: 80px; /* Tamaño aumentado */
+    background: #fff; /* Fondo blanco para resaltar el suplemento */
+    border-radius: 12px;
+    padding: 6px;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.productImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.quantityBadgeLarge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #ff6b00;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #1a1a1a;
+}
+
+.productName {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 4px;
+}
+
+.productPrice {
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+.totalText {
+    font-size: 1.1rem;
+    color: #fff;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    display: block;
+}
+
+.orderMetaInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.orderDate {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+}
+
+.trackingBadge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(34, 197, 94, 0.15); /* Verde suave */
+    color: #22c55e;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    width: fit-content; /* El ancho será igual al contenido interno */
+    margin-bottom: 0.5rem; 
+    margin-top: 0.5rem; 
+}
+
+.trackingBadge strong {
+    color: #fff;
+    letter-spacing: 0.5px;
+    margin-left: 4px;
+}
+
+.noTracking {
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+}
+
+/* Ajuste opcional para móviles muy pequeños */
+@media (max-width: 480px) {
+    .inputGroupRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+        gap: 0.5rem; /* Reduce el espacio si la pantalla es muy angosta */
+    }
+    
+    /* Achicamos un poco la letra de los labels si es necesario */
+    .inputGroupRow label {
+        font-size: 0.75rem;
+    }
+  .dataItem {
+    margin-bottom: 0.5rem;
+  }
+}

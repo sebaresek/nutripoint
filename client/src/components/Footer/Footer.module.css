@@ -1,0 +1,231 @@
+.footerMain {
+    margin-top: 4rem;
+    background: #050505;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 4rem;
+    width: 100%;
+}
+
+.footerContent {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+    gap: 3rem;
+    padding-bottom: 4rem !important;
+}
+
+/* Marca y Logo */
+.brandLogo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.brandLogo span {
+    color: var(--primary);
+    font-size: 1rem;
+    vertical-align: super;
+    margin-left: 2px;
+}
+
+.footerBrand p {
+    color: #888;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    max-width: 300px;
+}
+
+/* Redes Sociales */
+.socialLinks {
+    display: flex;
+    gap: 1rem;
+}
+
+.socialLinks a {
+    width: 40px;
+    height: 40px;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    color: #fff;
+}
+
+@media (hover: hover) {
+    .socialLinks a:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+        transform: translateY(-3px);
+    }
+}
+
+/* Enlaces y Navegación */
+.footerLinks h4, 
+.footerContact h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.footerLinks ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footerLinks a {
+    color: #888;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footerLinks a:hover {
+    color: var(--primary);
+}
+
+/* Contacto y Badge de Seguridad */
+.contactItem {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+}
+
+.trustBadge {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #111;
+    border-radius: 12px;
+    border: 1px solid var(--primary); 
+}
+
+.trustBadge div {
+    display: flex;
+    flex-direction: column;
+}
+
+.trustBadge strong {
+    font-size: 0.9rem;
+    color: #eee;
+}
+
+.trustBadge span {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* Footer Bottom */
+.footerBottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 2rem 0;
+    color: #555;
+    font-size: 0.85rem;
+}
+
+.bottomContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paymentIcons {
+    display: flex;
+    gap: 1rem;
+    opacity: 0.7;
+}
+
+/* RESPONSIVIDAD */
+@media (max-width: 968px) {
+    .footerContent {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+    }
+    
+    .footerBrand, 
+    .footerContact {
+        grid-column: span 2;
+    }
+
+    .footerBrand p {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .footerMain {
+        padding-top: 3rem;
+    }
+
+    .footerContent {
+        /* Cambiamos a 2 columnas para que Navegación y Legal entren al lado */
+        grid-template-columns: 1fr 1fr; 
+        gap: 2rem;
+        /* text-align: center; */
+        padding-bottom: 2rem !important;
+
+    }
+
+    /* Forzamos que la marca y el contacto ocupen todo el ancho (las 2 columnas) */
+    .footerBrand, 
+    .footerContact {
+        grid-column: span 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Las secciones de links ahora heredarán 1 columna cada una automáticamente */
+    .footerLinks {
+        grid-column: span 1;
+    }
+
+    .footerLinks:nth-of-type(2) {
+        text-align: center;
+    }
+    .footerLinks:nth-of-type(2) ul {
+        align-items: center;
+        /* margin-left: 2rem;  */
+    }
+
+    /* Columna de Legal (la segunda de las dos columnas de links) */
+    .footerLinks:nth-of-type(3) {
+        text-align: center;
+    }
+    .footerLinks:nth-of-type(3) ul {
+        align-items: center; 
+        /* margin-right: 1rem; */
+    }
+    
+    .footerLinks h4, 
+    .footerContact h4{
+    margin-bottom: 5px !important;
+    }
+
+    /* Mantenemos el resto (Marca y Contacto) centrados */
+    .footerBrand, 
+    .footerContact {
+        grid-column: span 2;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center; /* Asegura que el logo y contacto sigan centrados */
+    }
+    .bottomContainer p{
+    padding-right: 0.5rem !important;
+    padding-left: 1rem !important;
+
+}
+}
+

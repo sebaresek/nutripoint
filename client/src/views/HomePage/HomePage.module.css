@@ -1,0 +1,108 @@
+/* Contenedor de la barra de navegación */
+.categoryNavWrapper {
+    padding: 1rem !important;
+    margin-top: -1rem !important;
+    margin-bottom: 2rem !important;
+    display: flex;
+    justify-content: center;
+    z-index: 30;
+    position: relative;
+    width: 100%;
+}
+
+.categoryNav {
+    display: flex;
+    gap: 0.75rem;
+    padding: 0.6rem;
+    border-radius: 100px;
+    background: rgba(13, 13, 13, 0.8) !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    
+    /* Responsive Scroll */
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    max-width: 95vw;
+
+    /* --- AGREGAR ESTO --- */
+    scroll-snap-type: x mandatory; /* Fuerza el ajuste en el eje X */
+    -webkit-overflow-scrolling: touch; /* Mejora la inercia en iOS */
+}
+
+.categoryNav::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* Los botones (Tabs) */
+.catTab {
+    padding: 0.6rem 1.4rem;
+    border-radius: 100px;
+    border: none;
+    background: transparent;
+    color: #888;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.catTab:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.active {
+    background: var(--primary, #f97316) !important;
+    color: #000 !important;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+    font-weight: 800;
+}
+
+/* Grilla de productos */
+.productsSection {
+    padding: 2rem 1rem 6rem;
+    max-width: 1300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.gridResponsive {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+}
+
+/* Media Queries */
+@media (max-width: 1100px) {
+    .gridResponsive { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .gridResponsive { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+}
+
+@media (max-width: 768px) {
+    .categoryNavWrapper {
+        justify-content: flex-start; /* Empieza desde la izquierda en móvil */
+        padding-left: 1rem !important;
+        margin-top: 5px !important;
+    }
+    
+    .gridResponsive { grid-template-columns: repeat(2, 1fr); }
+    
+    .categoryNav {
+        border-radius: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .gridResponsive { grid-template-columns: 1fr; }
+}

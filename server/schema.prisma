@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  products Product[]
+
+  @@map("Categories")
+}
+
+model Product {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  oldPrice    Float?      @default(0)
+  stock       Int         @default(0)
+  image       String?
+  flavors     String[]
+  createdAt   DateTime    @default(now())
+  categoryId  Int
+  orderItems  OrderItem[]
+  category    Category    @relation(fields: [categoryId], references: [id])
+
+  @@map("Products")
+}
+
+model Order {
+  id           Int         @id @default(autoincrement())
+  total        Float
+  status       String      @default("PENDIENTE")
+  createdAt    DateTime    @default(now())
+  
+  // Seguimiento y Envío
+  trackingCode String?     
+  shippingCost Float       @default(0)      // <--- Agrega esto para el monto
+  shippingMethod String?                  // <--- Agrega esto para el nombre (ej: "Cadetería")
+  
+  // Datos de envío específicos
+  fullName     String?     
+  phone        String?     
+  address      String?     
+  postalCode   String?     
+  province     String?     
+  city         String?     
+  notes        String?     @db.Text 
+  
+  userId       String      
+  user         Users       @relation(fields: [userId], references: [id])
+  items        OrderItem[]
+
+  @@map("Orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  quantity  Int
+  price     Float
+  orderId   Int
+  productId Int
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@map("OrderItems")
+}
+
+model Users {
+  id          String   @id 
+  email       String   @unique @db.VarChar(255)
+  name        String   @db.VarChar(255) // Este suele ser el nombre de Firebase
+  
+  // Campos de perfil extendidos
+  fullName    String?  @db.VarChar(255) // <--- Nuevo (Nombre real de envío)
+  phone       String?  @db.VarChar(20)
+  address     String?  @db.Text
+  postalCode  String?  @db.VarChar(10)  // <--- Nuevo
+  province    String?  @db.VarChar(100) // <--- Nuevo
+  city        String?  @db.VarChar(100) // <--- Nuevo
+  notes       String?  @db.Text
+  
+  isAdmin     Boolean? @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  orders      Order[]
+
+  @@map("Users")
+}
