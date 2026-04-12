@@ -62,7 +62,7 @@ const sendOrderNotification = async (orderData) => {
           </div>
 
           <div style="margin-top: 30px; text-align: center;">
-            <a href="http://localhost:5173/admin" style="background-color: #222; color: #ffffff; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
+            <a href="https://nutripoint.site/admin" style="background-color: #222; color: #ffffff; padding: 15px 25px; text-decoration: none; border-radius: 5px; font-weight: bold; display: inline-block;">
               GESTIONAR EN PANEL ADMIN
             </a>
           </div>

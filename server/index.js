@@ -22,7 +22,7 @@ const server = require('./src/app.js');
 const { prisma } = require('./src/db.js'); // Traemos prisma en lugar de conn
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3010;
 
 // Con Prisma no hace falta .sync(), el servidor arranca directo
 async function main() {
