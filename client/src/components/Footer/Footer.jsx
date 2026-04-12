@@ -20,9 +20,9 @@ const Footer = () => {
                 <div className={styles.footerLinks}>
                     <h4>Navegación</h4>
                     <ul>
-                        <li><a href="#">Inicio</a></li>
-                        <li><a href="#">Tienda</a></li>
-                        <li><a href="#">Categorías</a></li>
+                        <li><a href="/">Inicio</a></li>
+                        <li><a href="/">Tienda</a></li>
+                        <li><a href="/">Categorías</a></li>
                     </ul>
                 </div>
 
