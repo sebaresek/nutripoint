@@ -17,7 +17,7 @@ import { auth } from './utils/firebase';
 import HomePage from './views/HomePage/HomePage';
 import DetailPage from './views/DetailPage/DetailPage';
 import PaymentSuccess from './views/PaymentSuccess/PaymentSuccess'; 
-import UserDashboard from './views/userDashboard/UserDashboard';
+import UserDashboard from './views/UserDashboard/UserDashboard';
 // REVISA SI ESTA RUTA TIENE LA "T":
 import CheckoutPage from './views/CheckoutPage/CheckoutPage'; 
 
