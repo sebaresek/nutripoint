@@ -58,13 +58,13 @@ const AppContent = ({ products, setProducts, categories, setCategories, user }) 
                         element={<CheckoutPage items={cartItems} />} 
                     />
                     <Route path="/payment-success" element={<PaymentSuccess />} />
-                    <Route path="/profile" element={user ? <UserDashboard /> : <Navigate to="/" /> } />
+                    <Route path="profile" element={user ? <UserDashboard /> : <Navigate to="/" /> } />
 
                     <Route path="/admin" element={<AdminLayout products={products} setProducts={setProducts} categories={categories} setCategories={setCategories} />}>
                         <Route index element={<Navigate to="dashboard" />} />
-                        <Route path="/dashboard" element={<AdminDashboard />} />
-                        <Route path="/products" element={<AdminProducts />} />
-                        <Route path="/orders" element={<AdminOrders />} />
+                        <Route path="dashboard" element={<AdminDashboard />} />
+                        <Route path="products" element={<AdminProducts />} />
+                        <Route path="orders" element={<AdminOrders />} />
                     </Route>
                 </Routes> 
             </main>
