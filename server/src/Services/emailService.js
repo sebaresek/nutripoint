@@ -23,7 +23,7 @@ const sendOrderNotification = async (orderData) => {
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
         
         <div style="${headerStyle}">
-            <img src="https://lh3.googleusercontent.com/d/1ONwm-iuIHugvDmNComYTo4uFAWDiqH1o" alt="NutriPoint" style="width: 240px; height: auto; display: block; margin: 0 auto; border: 0;">
+            <img src="https://lh3.googleusercontent.com/d/1mZRt4krPHH9nzIGNAHl79H8ovL5IQBy8" alt="NutriPoint" style="width: 240px; height: auto; display: block; margin: 0 auto; border: 0;">
         </div>
 
         <div style="padding: 30px; background-color: #ffffff;">
@@ -87,7 +87,7 @@ const sendCustomerConfirmation = async (orderData) => {
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
         
         <div style="${headerStyle}">
-            <img src="https://lh3.googleusercontent.com/d/1ONwm-iuIHugvDmNComYTo4uFAWDiqH1o" alt="NutriPoint" style="width: 240px; height: auto; display: block; margin: 0 auto; border: 0;">
+            <img src="https://lh3.googleusercontent.com/d/1mZRt4krPHH9nzIGNAHl79H8ovL5IQBy8" alt="NutriPoint" style="width: 240px; height: auto; display: block; margin: 0 auto; border: 0;">
         </div>
 
         <div style="padding: 30px; background-color: #ffffff;">
@@ -157,7 +157,7 @@ const sendShippingUpdate = async (data) => {
             <div style="max-width: 600px; margin: auto; background: #ffffff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
                 
                 <div style="${headerStyle}">
-                    <img src="https://lh3.googleusercontent.com/d/1ONwm-iuIHugvDmNComYTo4uFAWDiqH1o" alt="NutriPoint" style="width: 240px; height: auto; display: block; margin: 0 auto; border: 0;">
+                    <img src="https://lh3.googleusercontent.com/d/1mZRt4krPHH9nzIGNAHl79H8ovL5IQBy8" alt="NutriPoint" style="width: 240px; height: auto; display: block; margin: 0 auto; border: 0;">
                 </div>
 
                 <div style="padding: 30px;">

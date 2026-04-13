@@ -7,7 +7,8 @@ const Footer = () => {
         <footer className={styles.footerMain}>
             <div className={`${styles.footerContent} container`}>
                 <div className={styles.footerBrand}>
-                    <h2 className={styles.brandLogo}>NutriPoint<span>©</span></h2>
+                    {/* <h2 className={styles.brandLogo}>NutriPoint<span>©</span></h2> */}
+                    <span className={styles.brandLogo}>Nutri<strong className={styles.brandLogoTwo}>Point</strong><span>©</span></span>
                     <p>Tu plataforma de confianza. Rápido, seguro y siempre al mejor precio.</p>
                     <div className={styles.socialLinks}>
                         <a href="https://www.instagram.com/nutripoint.ar/" target="_blank" rel="noopener noreferrer"><Instagram size={20} /></a>
