@@ -277,7 +277,7 @@ const { products, setProducts, categories } = useOutletContext();
                                 </div>
 
                                 <div className={styles['form-group']}>
-                                    <label>Precio Oferta (Opcional)</label>
+                                    <label>Precio Anterior (Opcional)</label>
                                     <input className={styles['no-arrows']} type="number" value={formData.oldPrice} onChange={e => setFormData({...formData, oldPrice: e.target.value})} />
                                 </div>
 
