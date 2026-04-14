@@ -44,13 +44,13 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.statusBadge {
+/* .statusBadge {
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
-}
+} */
 
 /* Estilo cuando está pendiente */
 .statusPending {
@@ -61,6 +61,12 @@
 
 /* Estilo cuando ya fue enviado */
 .statusEnviado {
+    background: rgba(34, 197, 94, 0.2);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.statusCompletado {
     background: rgba(34, 197, 94, 0.2);
     color: #22c55e;
     border: 1px solid rgba(34, 197, 94, 0.3);

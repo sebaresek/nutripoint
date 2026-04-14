@@ -108,7 +108,7 @@ const receiveWebhook = async (req, res) => {
                 console.log("🛠️ Modo Test Detectado");
                 data = {
                     status: "approved",
-                    external_reference: "59" // Asegurate que la orden 50 exista en tu DB
+                    external_reference: "1" // Asegurate que la orden 50 exista en tu DB
                 };
             } else {
                 // Flujo real: intenta buscar en Mercado Pago
