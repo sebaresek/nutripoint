@@ -1,12 +1,4 @@
-// const { PrismaClient } = require('@prisma/client');
-// const pg = require('pg'); 
-// const { PrismaPg } = require('@prisma/adapter-pg');
 const { prisma } = require('../db');
-
-
-// const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-// const adapter = new PrismaPg(pool);
-// const prisma = new PrismaClient({ adapter });
 
 // --- OBTENER TODOS LOS PRODUCTOS ---
 const getProducts = async (req, res) => {
@@ -107,10 +99,23 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        await prisma.product.delete({ where: { id: parseInt(id) } });
+        const productId = parseInt(id);
+
+        // 1. Eliminar primero los items de órdenes que referencian este producto
+        // ¡OJO! Esto alterará el historial de tus ventas anteriores.
+        await prisma.orderItem.deleteMany({
+            where: { productId: productId }
+        });
+
+        // 2. Ahora sí, borrar el producto
+        await prisma.product.delete({
+            where: { id: productId }
+        });
+
         res.status(204).send();
     } catch (e) {
-        res.status(400).json({ error: e.message });
+        console.error("❌ Error al eliminar:", e.message);
+        res.status(400).json({ error: "No se pudo eliminar: el producto tiene registros asociados." });
     }
 };
 

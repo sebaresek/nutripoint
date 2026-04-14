@@ -74,12 +74,12 @@ const createOrder = async (req, res) => {
             body: {
                 items: mpItems,
                 external_reference: newOrder.id.toString(),
-                // back_urls: {
-                //     success: "http://localhost:5173/success",
-                //     failure: "http://localhost:5173/cart",
-                //     pending: "http://localhost:5173/pending"
-                // },
-                // auto_return: "approved",
+                notification_url: "https://api.nutripoint.site/api/orders/webhook", 
+                back_urls: {
+                    success: "https://nutripoint.site/success",
+                    failure: "https://nutripoint.site/cart",
+                },
+                auto_return: "approved",
             }
         });
         console.log("✅ Link de pago generado:", result.init_point);
@@ -120,16 +120,28 @@ const receiveWebhook = async (req, res) => {
             const orderId = data.external_reference;
 
             if (data.status === "approved") {
-                const finishedOrder = await prisma.order.update({
-                    where: { id: Number(orderId) },
-                    data: { status: "COMPLETADO" },
-                    include: { 
-                        user: true,
-                        items: { include: { product: true } }
-                    }
-                });
+                // Usamos una transacción para asegurar consistencia
+                const [finishedOrder] = await prisma.$transaction(async (tx) => {
+                    // 1. Actualizar estado de la orden y traer los items
+                    const order = await tx.order.update({
+                        where: { id: Number(orderId) },
+                        data: { status: "COMPLETADO" },
+                        include: { 
+                            user: true,
+                            items: { include: { product: true } }
+                        }
+                    });
 
-                console.log(`✅ Orden ${orderId} pagada. Enviando correos...`);
+                    // 2. Descontar stock de cada producto usando los items de la orden encontrada
+                    for (const item of order.items) {
+                        await tx.product.update({
+                            where: { id: item.productId },
+                            data: { stock: { decrement: item.quantity } }
+                        });
+                    }
+
+                    return [order]; // Retornamos la orden para usarla en los mails
+                });
 
                 // Enviar mails (Admin y Cliente)
                 await Promise.all([

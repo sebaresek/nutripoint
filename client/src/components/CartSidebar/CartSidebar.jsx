@@ -183,7 +183,8 @@ const CartSidebar = () => {
                             )} */}
                             <div className={styles.cartTotal}>
                                 <span>Total:</span>
-                                <strong> ${(cartTotal + shippingCost).toLocaleString('es-AR')}</strong>
+                                {/* <strong> ${(cartTotal + shippingCost).toLocaleString('es-AR')}</strong> */}
+                                <strong> ${cartTotal.toLocaleString('es-AR')}</strong>
                             </div>
 
                             {/* <button className={styles.checkoutBtn} onClick={handleMainAction}

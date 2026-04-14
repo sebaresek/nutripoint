@@ -9,7 +9,6 @@ const {
 const { getMetrics } = require('../controllers/adminController');
 // IMPORTAMOS EL MIDDLEWARE
 const { verifyAdmin } = require('../controllers/authMiddleware');
-
 const router = Router();
 
 // Rutas públicas (Cualquiera puede ver o buscar productos)
