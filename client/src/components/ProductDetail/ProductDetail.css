@@ -125,8 +125,11 @@
 
 .pd-price-note { 
   color: #666; 
-  font-size: 0.8rem; 
-  margin-top: 0.25rem; 
+  font-size: 0.9rem; 
+  margin-top: -7px; 
+  margin-bottom: 0px;
+  font-weight: 600; 
+
 }
 
 /* Selectores de Sabor / Variantes */

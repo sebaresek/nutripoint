@@ -90,11 +90,18 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                 <div className="pd-current-price">
                     ARS {product.price.toLocaleString('es-AR')}
                 </div>
-                <p className="pd-price-note">Pasarela de Mercado Pago</p>
+                {/* <p className="pd-price-note">Pasarela de Mercado Pago</p> */}
                 </div>
 
                 {/* Variant selector */}
                 <div className="pd-variants">
+
+                {/*  PESO */}
+                {product.weight && (
+                <span className="pd-price-note">
+                    Tamaño: {product.weight >= 1000 ? `${product.weight / 1000}kg` : `${product.weight}g`}
+                </span>
+                )}
                 {flavorsList.length > 0 ? (
                     <>
                     <h4 style={{ color: isSelectionMissing ? 'var(--primary)' : '#aaa', fontSize: '0.85rem', marginBottom: '0.2rem', transition: 'color 0.3s' }}>

@@ -68,13 +68,19 @@ export default function CheckoutPage({ items = [] }) {
             if (!isEditing && formData.postalCode && formData.postalCode.length === 4) {
                 setIsCalculatingShipping(true);
                 try {
+                    // CALCULAMOS EL PESO TOTAL AQUÍ
+                    const totalWeight = items.reduce((acc, item) => {
+                        // Si el item no tiene peso definido, usamos 1000g por defecto
+                        return acc + ((item.weight || 1000) * item.quantity);
+                    }, 0);
+
                     const response = await fetch(`${API_URL}/shipping/estimate`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             destination_cp: formData.postalCode,
                             // Enviamos los items para calcular peso si fuera necesario en el futuro
-                            items: items.map(i => ({ id: i.id, quantity: i.quantity }))
+                            weight: totalWeight
                         })
                     });
                     const data = await response.json();

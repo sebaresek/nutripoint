@@ -9,8 +9,6 @@ const createOrder = async (req, res) => {
 
     try {
         const { items, userId, fullName, phone, address, postalCode, province, city, notes, shippingMethod, shippingCost, email} = req.body;
-
-        // LOG 2: Verificar datos antes de Prisma
         console.log("🔍 Verificando campos: ", { userId, itemsLength: items?.length });
 
         // 1. Actualización de Usuario
@@ -21,7 +19,6 @@ const createOrder = async (req, res) => {
         });
         console.log("✅ Perfil actualizado");
 
-        // const total = items.reduce((acc, i) => acc + (Number(i.price) * Number(i.quantity)), 0);
         const productsTotal = items.reduce((acc, i) => acc + (Number(i.price) * Number(i.quantity)), 0);
         const total = productsTotal + Number(shippingCost || 0);
 
@@ -29,8 +26,15 @@ const createOrder = async (req, res) => {
         console.log("📝 Creando orden en BDD...");
         const newOrder = await prisma.order.create({
             data: {
-                total, userId, fullName, phone, address, 
-                postalCode, province, city, notes,
+                total, 
+                userId, 
+                fullName, 
+                phone, 
+                address, 
+                postalCode, 
+                province, 
+                city, 
+                notes,
                 shippingCost: Number(shippingCost || 0),
                 shippingMethod: shippingMethod,
                 items: {
@@ -44,38 +48,6 @@ const createOrder = async (req, res) => {
         });
         console.log("✅ Orden creada ID:", newOrder.id);
 
-        // // No bloqueamos la respuesta al cliente, lo hacemos async
-        // sendOrderNotification({
-        //     customerName: fullName, // Usamos la variable fullName que ya tienes
-        //     total: total,           // El total calculado (productos + envío)
-        //     items: items            // Usamos 'items' que es como viene en el body
-        // }).catch(err => console.error("Error enviando mail:", err));
-
-        // let emailFinal = email;
-
-        // if (!emailFinal) {
-        //     console.log("🔍 Buscando email en DB para el user:", userId);
-        //     const userDb = await prisma.users.findUnique({
-        //         where: { id: userId }
-        //     });
-        //     emailFinal = userDb?.email;
-        // }
-
-        // if (emailFinal) {
-        //     sendCustomerConfirmation({
-        //         customerEmail: emailFinal, // <--- Este es el campo que Nodemailer usa para el 'to'
-        //         customerName: fullName,
-        //         orderId: newOrder.id, // Usa el id de la orden recién creada
-        //         shippingMethod: shippingMethod,
-        //         address: address,
-        //         city: city,
-        //         total: total,
-        //         items: items
-        //     }).catch(e => console.error("Error mail cliente:", e));
-        // } else {
-        //     console.error("❌ No se pudo enviar mail al cliente: 'email' llegó undefined en req.body");
-        // }
-
         // 3. Mercado Pago
         const mpItems = items.map(item => ({
             id: item.id.toString(),
@@ -85,8 +57,7 @@ const createOrder = async (req, res) => {
             currency_id: 'ARS'
         }));
 
-        // AGREGA ESTO para que el cliente pague el envío
-        if (shippingCost > 0) {
+        if (Number(shippingCost) > 0) {
             mpItems.push({
                 id: "shipping",
                 title: `Envío: ${shippingMethod}`,
@@ -112,7 +83,6 @@ const createOrder = async (req, res) => {
             }
         });
         console.log("✅ Link de pago generado:", result.init_point);
-
         res.json({ id: newOrder.id, init_point: result.init_point });
 
     } catch (error) {

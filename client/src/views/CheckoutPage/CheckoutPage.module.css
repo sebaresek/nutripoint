@@ -33,6 +33,8 @@
   grid-template-columns: 1fr;
   /* Gap responsive equilibrado */
   gap: clamp(2rem, 5vw, 4rem);
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .inputError {
@@ -150,18 +152,6 @@
     position: sticky;
     top: 2rem;
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-  }
-}
-
-@media (max-width: 450px) {
-    .summaryCard {
-      position: sticky;
-      margin-top: 2rem;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    }
-
-    .itemImage {
-    object-fit:contain !important;
   }
 }
 
@@ -421,10 +411,6 @@
   transition: all 0.2s ease;
 }
 
-.methodCard:hover {
-  border-color: #3f3f46;
-}
-
 .methodCardSelected {
   border-color: var(--accent-orange); /* Color lima para el seleccionado */
   background-color: rgba(204, 146, 22, 0.05);
@@ -469,4 +455,32 @@
   font-size: 0.9rem;
   font-weight: 700;
   color: #f8fafc;
+}
+
+@media (max-width: 450px) {
+    .container {
+        padding: 2rem 1rem; /* Reducimos padding lateral en celus muy chicos */
+    }
+    
+    .itemImage {
+        width: 80px; /* Reducir un poco el tamaño en celus ayuda al espacio */
+        height: 80px;
+    }
+
+    .summaryCard {
+        width: 100%;
+        padding: 1rem; /* Menos padding interno para ganar espacio */
+        box-sizing: border-box;
+        margin-left: 0;
+        margin-right: 0;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+
+    }
+    
+    .totalAmount {
+        font-size: 1.8rem; /* El texto muy grande puede romper el layout */
+    }
+    .title {
+      font-size: 2rem;
+    }
 }

@@ -2,16 +2,18 @@ const { prisma } = require('../db');
 
 const getCategories = async (req, res) => {
     try {
-        const categories = await Category.findAll();
+        // Cambiamos findAll() de Sequelize por findMany() de Prisma
+        const categories = await prisma.category.findMany({
+            orderBy: { name: 'asc' }
+        });
         res.json(categories);
     } catch (e) {
+        console.error("Error en getCategories:", e);
         res.status(500).json({ error: e.message });
     }
 };
 
-// categoryController.js
 const seedCategories = async (req, res) => {
-    // Lista actualizada sin "Aminoacidos" y con "Salud & Bienestar"
     const list = [
         'Proteinas', 
         'Creatinas', 
@@ -21,7 +23,6 @@ const seedCategories = async (req, res) => {
         'Accesorios'
     ];
     try {
-        // Usamos findOrCreate para no duplicar si ya existen las otras
         await Promise.all(list.map(name => 
             prisma.category.upsert({
                 where: { name },

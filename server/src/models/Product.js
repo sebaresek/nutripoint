@@ -1,3 +1,4 @@
+// models/Product.js
 const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
@@ -7,9 +8,10 @@ module.exports = (sequelize) => {
     description: { type: DataTypes.TEXT },
     price: { type: DataTypes.FLOAT, allowNull: false },
     // AGREGAMOS ESTA LÍNEA:
+    weight: { type: DataTypes.INTEGER, defaultValue: 1000 }, // Peso en gramos
     oldPrice: { type: DataTypes.FLOAT, defaultValue: 0 }, 
     stock: { type: DataTypes.INTEGER, defaultValue: 0 },
-    image: { type: DataTypes.TEXT }, // Para el link que me pediste
+    image: { type: DataTypes.TEXT },
     active: { type: DataTypes.BOOLEAN, defaultValue: true }
   });
 };

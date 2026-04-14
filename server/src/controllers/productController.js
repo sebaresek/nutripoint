@@ -1,13 +1,15 @@
-import { PrismaClient } from '@prisma/client';
-import { PrismaPg } from '@prisma/adapter-pg';
-import pg from 'pg';
+// const { PrismaClient } = require('@prisma/client');
+// const pg = require('pg'); 
+// const { PrismaPg } = require('@prisma/adapter-pg');
+const { prisma } = require('../db');
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+
+// const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+// const adapter = new PrismaPg(pool);
+// const prisma = new PrismaClient({ adapter });
 
 // --- OBTENER TODOS LOS PRODUCTOS ---
-export const getProducts = async (req, res) => {
+const getProducts = async (req, res) => {
     try {
         const products = await prisma.product.findMany({
             include: { category: true },
@@ -21,9 +23,9 @@ export const getProducts = async (req, res) => {
 };
 
 // --- CREAR PRODUCTO ---
-export const createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
     try {
-        const { title, description, price, oldPrice, stock, image, category, flavors } = req.body;
+        const { title, description, price, oldPrice, stock, image, category, flavors, weight } = req.body;
 
         // Validamos flavors: Si Prisma falla con Array, lo enviamos como String
         // Pero primero intentamos el formato Array que pide tu Schema
@@ -35,6 +37,7 @@ export const createProduct = async (req, res) => {
                 description,
                 price: parseFloat(price) || 0,
                 oldPrice: parseFloat(oldPrice) || 0,
+                weight: parseInt(weight || 1000),
                 stock: parseInt(stock) || 0,
                 image,
                 flavors: flavorsData, 
@@ -57,15 +60,16 @@ export const createProduct = async (req, res) => {
 };
 
 // --- ACTUALIZAR PRODUCTO ---
-export const updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, price, oldPrice, stock, image, category, flavors } = req.body;
+        const { title, description, price, oldPrice, stock, image, category, flavors, weight } = req.body;
 
         const updateData = {
             name: title,
             description,
             image,
+            weight: weight ? parseInt(weight) : undefined, 
             price: price ? parseFloat(price) : undefined,
             oldPrice: oldPrice !== undefined ? parseFloat(oldPrice) : undefined,
             stock: stock !== undefined ? parseInt(stock) : undefined,
@@ -100,7 +104,7 @@ export const updateProduct = async (req, res) => {
 };
 
 // --- ELIMINAR PRODUCTO ---
-export const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
         await prisma.product.delete({ where: { id: parseInt(id) } });
@@ -111,7 +115,7 @@ export const deleteProduct = async (req, res) => {
 };
 
 // --- BUSCAR PRODUCTO ---
-export const searchProduct = async (req, res) => {
+const searchProduct = async (req, res) => {
   let { q } = req.query;
 
   if (!q || q.trim().length < 2) return res.json([]);
@@ -173,3 +177,11 @@ export const searchProduct = async (req, res) => {
     res.status(500).json({ error: "Error en la búsqueda" });
   }
 };
+
+module.exports = { 
+    searchProduct, 
+    createProduct,
+    deleteProduct,
+    updateProduct,
+    getProducts
+ };

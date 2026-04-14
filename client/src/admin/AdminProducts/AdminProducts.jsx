@@ -22,7 +22,8 @@ const { products, setProducts, categories } = useOutletContext();
         image: '', 
         description: '', 
         flavors: '', 
-        stock: ''
+        stock: '',
+        weight: '1000'
     });
 
     const showAlert = (message, type = 'success') => {
@@ -46,7 +47,8 @@ const { products, setProducts, categories } = useOutletContext();
                 image: product.image || '',
                 description: product.description || '',
                 flavors: product.flavors || '',
-                stock: product.stock !== undefined ? product.stock : ''
+                stock: product.stock !== undefined ? product.stock : '',
+                weight: product.weight || '1000'
             });
         } else {
             setEditingId(null);
@@ -73,7 +75,8 @@ const { products, setProducts, categories } = useOutletContext();
             image: formData.image,
             description: formData.description,
             flavors: formData.flavors,
-            stock: formData.stock ? Number(formData.stock) : 0
+            stock: formData.stock ? Number(formData.stock) : 0,
+            weight: Number(formData.weight)
         };
 
         try {
@@ -283,6 +286,27 @@ const { products, setProducts, categories } = useOutletContext();
                                     <input className={styles['no-arrows']} type="number" value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} />
                                 </div>
 
+                                <div className={styles['form-group']}>
+                                    <label>Peso (gramos)</label>
+                                    <input 
+                                        className={styles['no-arrows']} 
+                                        type="number" 
+                                        required
+                                        value={formData.weight} 
+                                        onChange={e => setFormData({...formData, weight: e.target.value})} 
+                                        placeholder="Ej: 1000"
+                                    />
+                                </div>
+
+                                <div className={styles['form-group']}>
+                                    <label>Sabores</label>
+                                    <input  
+                                    className={styles['no-arrows']} 
+                                    type="text" 
+                                    value={formData.flavors} 
+                                    onChange={e => setFormData({...formData, flavors: e.target.value})} />
+                                </div>
+
 
                                 {/* ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA */}
 
@@ -316,11 +340,6 @@ const { products, setProducts, categories } = useOutletContext();
                                             </ul>
                                         </div>
                                 </div>
-                            </div>
-
-                            <div className={styles['form-group']} style={{ marginTop: '1rem' }}>
-                                <label>Sabores</label>
-                                <input type="text" value={formData.flavors} onChange={e => setFormData({...formData, flavors: e.target.value})} />
                             </div>
 
                             <div className={styles['form-group']} style={{ marginTop: '1rem' }}>
