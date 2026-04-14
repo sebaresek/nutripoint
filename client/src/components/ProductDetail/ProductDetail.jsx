@@ -96,36 +96,72 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                 {/* Variant selector */}
                 <div className="pd-variants">
 
-                {/*  PESO */}
-                {product.weight && (
-                <span className="pd-price-note">
-                    Tamaño: {product.weight >= 1000 ? `${product.weight / 1000}kg` : `${product.weight}g`}
-                </span>
-                )}
-                {flavorsList.length > 0 ? (
-                    <>
-                    <h4 style={{ color: isSelectionMissing ? 'var(--primary)' : '#aaa', fontSize: '0.85rem', marginBottom: '0.2rem', transition: 'color 0.3s' }}>
-                        {isSelectionMissing ? '⚠️ Seleccioná un sabor:' : 'Opciones de sabor:'}
-                    </h4>
-                    {flavorsList.map((flavor, index) => (
-                        <label key={index} onClick={() => !isOutOfStock && setSelectedFlavor(flavor)} className={`pd-variant ${selectedFlavor === flavor ? 'active' : ''}`} style={{ cursor: isOutOfStock ? 'not-allowed' : 'pointer' }}>
-                        <span className="pd-variant-radio" style={{ background: selectedFlavor === flavor ? 'var(--primary)' : 'transparent' }}></span>
-                        <div className="pd-variant-info">
-                            <span className="pd-variant-name">{flavor}</span>
-                            {!isOutOfStock && <span className="pd-variant-stock" style={{ color: selectedFlavor === flavor ? 'var(--primary)' : '#888' }}>{selectedFlavor === flavor ? 'Seleccionado' : 'Seleccionar'}</span>}
-                        </div>
-                        </label>
-                    ))}
-                    </>
-                ) : (
-                    <label className="pd-variant active">
-                    <span className="pd-variant-radio"></span>
-                    <div className="pd-variant-info">
-                        <span className="pd-variant-name">Opción Única</span>
-                        <span className="pd-variant-stock">{isOutOfStock ? 'Sin unidades' : 'Stock verificado'}</span>
-                    </div>
-                    </label>
-                )}
+                    {/* 1. OCULTAR TAMAÑO: Accedemos a product.category.name */}
+                    {product.weight && product.category?.name?.toLowerCase() !== 'accesorios' && (
+                        <span className="pd-price-note">
+                            Tamaño: {product.weight >= 1000 ? `${product.weight / 1000}kg` : `${product.weight}g`}
+                        </span>
+                    )}
+
+                    {(() => {
+                        // Extraemos el nombre de la categoría de forma segura
+                        const categoryName = product.category?.name?.toLowerCase() || "";
+                        const isAccesorio = categoryName === 'accesorios';
+                        
+                        const labelText = isAccesorio ? 'Opciones:' : 'Opciones de sabor:';
+                        const missingLabelText = isAccesorio ? '⚠️ Seleccioná una opción:' : '⚠️ Seleccioná un sabor:';
+
+                        if (flavorsList.length > 0) {
+                            return (
+                                <>
+                                    <h4 style={{ 
+                                        color: isSelectionMissing ? 'var(--primary)' : '#aaa', 
+                                        fontSize: '0.85rem', 
+                                        marginBottom: '0.2rem', 
+                                        transition: 'color 0.3s' 
+                                    }}>
+                                        {isSelectionMissing ? missingLabelText : labelText}
+                                    </h4>
+                                    
+                                    {flavorsList.map((flavor, index) => (
+                                        <label 
+                                            key={index} 
+                                            onClick={() => !isOutOfStock && setSelectedFlavor(flavor)} 
+                                            className={`pd-variant ${selectedFlavor === flavor ? 'active' : ''}`} 
+                                            style={{ cursor: isOutOfStock ? 'not-allowed' : 'pointer' }}
+                                        >
+                                            <span className="pd-variant-radio" style={{ background: selectedFlavor === flavor ? 'var(--primary)' : 'transparent' }}></span>
+                                            <div className="pd-variant-info">
+                                                <span className="pd-variant-name">{flavor}</span>
+                                                {!isOutOfStock && (
+                                                    <span className="pd-variant-stock" style={{ color: selectedFlavor === flavor ? 'var(--primary)' : '#888' }}>
+                                                        {selectedFlavor === flavor ? 'Seleccionado' : 'Seleccionar'}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </label>
+                                    ))}
+                                </>
+                            );
+                        } else {
+                            return (
+                                <>
+                                    <h4 style={{ color: '#aaa', fontSize: '0.85rem', marginBottom: '0.2rem' }}>
+                                        {labelText}
+                                    </h4>
+                                    <label className="pd-variant active">
+                                        <span className="pd-variant-radio"></span>
+                                        <div className="pd-variant-info">
+                                            <span className="pd-variant-name">
+                                                {isAccesorio ? 'Opción Única' : 'Sabor Único'}
+                                            </span>
+                                            <span className="pd-variant-stock">{isOutOfStock ? 'Sin unidades' : 'Stock verificado'}</span>
+                                        </div>
+                                    </label>
+                                </>
+                            );
+                        }
+                    })()}
                 </div>
 
                 {/* Action buttons */}
