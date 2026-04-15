@@ -1,19 +1,19 @@
 import React from 'react';
 import styles from './Hero.module.css';
-import { getBannerUrl } from '../../utils/images'
+// import { getBannerUrl } from '../../utils/images'
 
 const Hero = () => {
-    const desktopBanner = "1mPEiliHhX4yXJ-7hxw7GWPGfqDxSxMPp";
-    const mobileBanner = "1XYDZ82hBLo_wJ1Jqew4GRynZ0S2x8Hra";
+    const desktopBanner = "https://pub-33e6f4df8e0a4acb8aea7062a1666a72.r2.dev/banner-ena.png";
+    const mobileBanner = "https://pub-33e6f4df8e0a4acb8aea7062a1666a72.r2.dev/banner-phone-ena.png";
 
     return (
         <section className={`${styles.heroSection} container`}>
             <div className={`${styles.heroBannerContainer} animate-fade-in`}>
                 <div className={`${styles.mainBanner} glass`}>
                     <picture>
-                        <source srcSet={getBannerUrl(mobileBanner)} media="(max-width: 768px)" />
+                        <source srcSet={mobileBanner} media="(max-width: 768px)" />
                         <img 
-                            src={getBannerUrl(desktopBanner)} 
+                            src={desktopBanner}
                             alt="NutriPoint Banner" 
                             className={styles.heroImage}
                         />
