@@ -6,15 +6,17 @@ import styles from './ProductCard.module.css';
 const ProductCard = ({ product, onDetail }) => {
     const { addToCart } = useCart();
 
-    const name = product.name || product.title || "Producto NutriPoint";
+    const name = product.name || "Producto NutriPoint";
     const price = product.price || 0;
     const image = product.image || 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&q=80';
-    const stock = product.stock !== undefined ? product.stock : 1;
-    const isOutOfStock = stock === 0;
+    
+    // --- LÓGICA DE STOCK CORREGIDA ---
+    // Sumamos el stock de todas las variantes del producto
+    const totalStock = product.variants?.reduce((acc, v) => acc + (Number(v.stock) || 0), 0) || 0;
+    const isOutOfStock = totalStock === 0;
 
     return (
         <div className="reveal-fade-up visible">
-            {/* 2. Uso de styles.nombreDeClase */}
             <div className={`${styles.packageCard} glass animate-fade-in`} onClick={onDetail}>
                 <div className={styles.packageImageContainer}>
                     <img
@@ -25,6 +27,7 @@ const ProductCard = ({ product, onDetail }) => {
                     />
                 </div>
 
+                {/* EL CARTEL DE AGOTADO APARECERÁ AQUÍ SI EL STOCK TOTAL ES 0 */}
                 {isOutOfStock && (
                     <div className={styles.outOfStockOverlay}>
                         <span>AGOTADO</span>

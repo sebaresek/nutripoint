@@ -77,6 +77,7 @@ model OrderItem {
   price     Float
   orderId   Int
   productId Int
+  variantId  Int?
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
 

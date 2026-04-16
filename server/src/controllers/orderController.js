@@ -38,14 +38,21 @@ const createOrder = async (req, res) => {
                 shippingCost: Number(shippingCost || 0),
                 shippingMethod: shippingMethod,
                 items: {
-                    create: items.map(item => ({
-                        productId: item.id,
-                        quantity: item.quantity,
-                        price: item.price
-                    }))
-                }
-            }
-        });
+                    create: items.map(item => {
+                                    // Buscamos el ID de la variante que coincida con el sabor seleccionado
+                                    const selectedVariant = item.variants?.find(v => v.flavor === item.selectedFlavor);
+                                    
+                                    return {
+                                        productId: item.id,
+                                        // Si encuentra la variante usa ese ID, si no, usa el variantId que venga o null
+                                        variantId: selectedVariant ? selectedVariant.id : (item.variantId || null),
+                                        quantity: item.quantity,
+                                        price: item.price
+                                    };
+                                })
+                            }
+                        }
+                    });
         console.log("✅ Orden creada ID:", newOrder.id);
 
         // 3. Mercado Pago
@@ -108,7 +115,7 @@ const receiveWebhook = async (req, res) => {
                 console.log("🛠️ Modo Test Detectado");
                 data = {
                     status: "approved",
-                    external_reference: "1" // Asegurate que la orden 50 exista en tu DB
+                    external_reference: "15" // Asegurate que la orden 50 exista en tu DB
                 };
             } else {
                 // Flujo real: intenta buscar en Mercado Pago
@@ -124,24 +131,39 @@ const receiveWebhook = async (req, res) => {
                 const [finishedOrder] = await prisma.$transaction(async (tx) => {
                     // 1. Actualizar estado de la orden y traer los items
                     const order = await tx.order.update({
-                        where: { id: Number(orderId) },
-                        data: { status: "COMPLETADO" },
-                        include: { 
-                            user: true,
-                            items: { include: { product: true } }
-                        }
-                    });
-
-                    // 2. Descontar stock de cada producto usando los items de la orden encontrada
-                    for (const item of order.items) {
-                        await tx.product.update({
-                            where: { id: item.productId },
-                            data: { stock: { decrement: item.quantity } }
+                            where: { id: Number(orderId) },
+                            data: { status: "COMPLETADO" },
+                            include: { 
+                                user: true,
+                                items: true // Traemos los items para tener los variantId
+                            }
                         });
-                    }
 
-                    return [order]; // Retornamos la orden para usarla en los mails
-                });
+                        // 2. Descontar stock de la VARIANTE (sabor)
+                        for (const item of order.items) {
+                            if (item.variantId) {
+                                const idParaProbar = item.variantId;
+                                await tx.productVariant.update({
+                                    where: { id: idParaProbar },
+                                    data: { stock: { decrement: item.quantity } }
+                                });
+                                console.log(`✅ Stock descontado para variante ID: ${item.variantId}`);
+                            } else {
+                                console.warn(`⚠️ El item con producto ID ${item.productId} no tiene variantId, no se descontó stock.`);
+                            }
+                        }
+
+                        // Para los mails, necesitamos re-incluir los nombres de los productos
+                        const orderWithProducts = await tx.order.findUnique({
+                            where: { id: order.id },
+                            include: {
+                                user: true,
+                                items: { include: { product: true } }
+                            }
+                        });
+
+                        return [orderWithProducts]; 
+                    });
 
                 // Enviar mails (Admin y Cliente)
                 await Promise.all([
