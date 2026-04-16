@@ -259,9 +259,6 @@ const { products, setProducts, categories } = useOutletContext();
                                 </div>
                             </div>
 
-                            {/* <div className={styles['item-stock']} style={{ color: item.stock > 0 ? '#22c55e' : '#ef4444', fontWeight: 'bold', paddingRight: '20px' }}>
-                                {item.stock} u.
-                            </div> */}
                             <div className={styles['item-stock']} style={{ 
                                 // Sumamos el stock de todas las variantes del producto
                                 color: (item.variants?.reduce((acc, v) => acc + (v.stock || 0), 0)) > 0 ? '#22c55e' : '#ef4444', 
