@@ -241,6 +241,7 @@
 
 /* TEXTAREA DESCRIPCIÓN */
 .form-group textarea {
+  margin-top: 3px;
   width: 100%;
   padding: 1rem;
   border-radius: 12px;
@@ -256,12 +257,12 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  /* background: rgba(0, 0, 0, 0.85); */
   display: flex;
   justify-content: center;
   align-items: center; /* Esto debería centrarlo verticalmente */
   z-index: 1000;
   padding: 2rem;
+  padding-top: 1rem;
   backdrop-filter: blur(4px); /* Opcional: mejora el efecto 'glass' */
 }
 
@@ -293,7 +294,7 @@
   position: absolute;
   top: 1.5rem;
   right: 1.5rem;
-  color: #555;
+  color: #fff;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -305,6 +306,37 @@
   transition: 0.2s;
 }
 
+.add-variant-btn{
+    position: absolute;
+    top: 14.5rem;
+    right: 1.5rem;
+    color: #fff;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.add-variant-btn:hover {
+  color: #fff;
+  transform: rotate(90deg);
+  transition: 0.2s;
+}
+
+.del-variant-btn{
+    color: #333;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.del-variant-btn:hover {
+  color: #333;
+  transform: rotate(90deg);
+  transition: 0.2s;
+}
+
+/* .form-group input{
+  margin-top: px !important;
+} */
 
 /* ============================= */
 /* FORMULARIO */
@@ -319,6 +351,7 @@
   background: rgba(255,255,255,0.03);
   color: white;
   outline: none;
+  margin-top: 3px !important;
 }
 
 .custom-select {
@@ -423,6 +456,8 @@
 .select-menu {
     width: 100%;
     position: relative;
+  margin-top: 3px !important;
+
 }
 
 .select-btn {

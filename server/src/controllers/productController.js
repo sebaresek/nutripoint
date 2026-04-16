@@ -4,24 +4,22 @@ const { prisma } = require('../db');
 const getProducts = async (req, res) => {
     try {
         const products = await prisma.product.findMany({
-            include: { category: true },
+            include: { 
+                category: true,
+                variants: true // 🔥 ESTO ES VITAL
+            },
             orderBy: { id: 'asc' }
         });
         res.status(200).json(products);
     } catch (error) {
-        console.error(" Error en getProducts:", error);
-        res.status(500).json({ error: "Error interno del servidor" });
+        res.status(500).json({ error: error.message });
     }
 };
 
 // --- CREAR PRODUCTO ---
 const createProduct = async (req, res) => {
     try {
-        const { title, description, price, oldPrice, stock, image, category, flavors, weight } = req.body;
-
-        // Validamos flavors: Si Prisma falla con Array, lo enviamos como String
-        // Pero primero intentamos el formato Array que pide tu Schema
-        const flavorsData = Array.isArray(flavors) ? flavors : (flavors ? [flavors] : []);
+        const { title, description, price, oldPrice, category, variants, weight, image } = req.body;
 
         const newProduct = await prisma.product.create({
             data: {
@@ -29,24 +27,28 @@ const createProduct = async (req, res) => {
                 description,
                 price: parseFloat(price) || 0,
                 oldPrice: parseFloat(oldPrice) || 0,
-                weight: parseInt(weight || 1000),
-                stock: parseInt(stock) || 0,
+                weight: parseInt(weight) || 1000,
                 image,
-                flavors: flavorsData, 
                 category: {
                     connectOrCreate: {
                         where: { name: category || 'Sin Categoria' },
                         create: { name: category || 'Sin Categoria' }
                     }
+                },
+                // Crear variantes anidadas
+                variants: {
+                    create: variants.map(v => ({
+                        flavor: v.flavor,
+                        stock: parseInt(v.stock) || 0,
+                        image: v.image
+                    }))
                 }
             },
-            include: { category: true }
+            include: { variants: true, category: true }
         });
 
-        console.log("✅ Producto guardado:", newProduct.name);
         res.status(201).json(newProduct);
     } catch (e) {
-        console.error("❌ ERROR POST:", e.message);
         res.status(400).json({ error: e.message });
     }
 };
@@ -55,43 +57,56 @@ const createProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, price, oldPrice, stock, image, category, flavors, weight } = req.body;
+        const { title, description, price, oldPrice, category, variants, weight, image } = req.body;
 
-        const updateData = {
-            name: title,
-            description,
-            image,
-            weight: weight ? parseInt(weight) : undefined, 
-            price: price ? parseFloat(price) : undefined,
-            oldPrice: oldPrice !== undefined ? parseFloat(oldPrice) : undefined,
-            stock: stock !== undefined ? parseInt(stock) : undefined,
-        };
+        // --- LOG 1: Ver qué llega del frontend ---
+        console.log("-----------------------------------------");
+        console.log("📥 PAYLOAD RECIBIDO EN UPDATE (ID:", id, "):");
+        console.log("Variants:", JSON.stringify(variants, null, 2));
 
-        if (category) {
-            updateData.category = {
-                connectOrCreate: {
-                    where: { name: category },
-                    create: { name: category }
-                }
-            };
-        }
+        // Transformación de datos con logs de seguridad
+        const cleanedVariants = (variants || []).map(v => ({
+            flavor: v.flavor || 'Sin Sabor',
+            stock: parseInt(v.stock) || 0, // Forzamos a que sea Número
+            image: v.image || null
+        }));
 
-        if (flavors) {
-            const flavorsArray = Array.isArray(flavors) ? flavors : [flavors];
-            // Usamos 'set' porque en PostgreSQL los arrays escalares se actualizan así en Prisma
-            updateData.flavors = { set: flavorsArray };
-        }
+        console.log("🛠️ VARIANTES MAPEADAS PARA PRISMA:", cleanedVariants);
 
         const updated = await prisma.product.update({
             where: { id: parseInt(id) },
-            data: updateData,
-            include: { category: true }
+            data: {
+                name: title,
+                description,
+                price: parseFloat(price) || 0,
+                oldPrice: parseFloat(oldPrice) || 0,
+                weight: parseInt(weight) || 1000,
+                image,
+                category: {
+                    connectOrCreate: {
+                        where: { name: category || 'Sin Categoria' },
+                        create: { name: category || 'Sin Categoria' }
+                    }
+                },
+                variants: {
+                    // Borramos las variantes viejas para evitar duplicados o IDs huérfanos
+                    deleteMany: {}, 
+                    create: cleanedVariants
+                }
+            },
+            include: {
+                category: true,
+                variants: true
+            }
         });
 
-        res.json(updated);
-    } catch (e) {
-        console.error("❌ ERROR UPDATE:", e.message);
-        res.status(400).json({ error: e.message });
+        console.log("✅ PRODUCTO ACTUALIZADO CON ÉXITO");
+        console.log("-----------------------------------------");
+        res.status(200).json(updated);
+
+    } catch (error) {
+        console.error("❌ ERROR EN UPDATE PRODUCT:", error);
+        res.status(400).json({ error: error.message });
     }
 };
 

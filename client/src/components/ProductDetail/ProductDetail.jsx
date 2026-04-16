@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   ArrowLeft,
-  Zap,
   ShoppingBasket,
   Plus,
   PackageCheck,
@@ -13,36 +12,40 @@ import { useCart } from '../../context/CartContext';
 import './ProductDetail.css'; 
 
 const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
+    console.log("🔍 DATOS RECIBIDOS EN DETAIL:", product);
+    console.log("🍦 VARIANTES:", product?.variants);
     const { addToCart } = useCart();
-    const [selectedFlavor, setSelectedFlavor] = React.useState('');
+    const [selectedVariant, setSelectedVariant] = useState(null);
+    const variants = product?.variants || [];
 
-    // Procesamos la lista de sabores
-    const flavorsList = Array.isArray(product?.flavors) 
-        ? product.flavors.flatMap(f => f.split(',').map(s => s.trim()))
-        : product?.flavors 
-        ? product.flavors.split(',').map(f => f.trim()).filter(Boolean) 
-        : [];
+    // 2. Calcular Stock Total sumando todas las variantes para el badge general
+    const totalStock = useMemo(() => {
+        return variants.reduce((acc, v) => acc + (parseInt(v.stock) || 0), 0);
+    }, [variants]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
         
-        if (flavorsList.length === 1) {
-        setSelectedFlavor(flavorsList[0]);
+        // Si hay una sola variante, la seleccionamos automáticamente
+        if (variants.length === 1) {
+            setSelectedVariant(variants[0]);
         } else {
-        setSelectedFlavor('');
+            setSelectedVariant(null);
         }
-    }, [product, flavorsList.length]);
+    }, [product?.id, variants.length]);
 
     if (!product) return null;
 
-    const isOutOfStock = product.stock === 0;
-
-    // Lógica de validación para habilitar botones
-    const isSelectionMissing = flavorsList.length > 1 && !selectedFlavor;
+    // Lógica de stock y deshabilitación
+    const isOutOfStock = totalStock <= 0;
+    const isSelectionMissing = variants.length > 1 && !selectedVariant;
     const isActionDisabled = isOutOfStock || isSelectionMissing;
 
+    // IMAGEN DINÁMICA: Si el sabor tiene imagen propia, la muestra; si no, usa la de portada
+    const currentDisplayImage = selectedVariant?.image || product.image || 'https://images.unsplash.com/photo-1542204172-658a09b6b5e7?w=800&q=80';
+
     const similarProducts = allProducts
-        .filter(p => p.category === product.category && p.id !== product.id)
+        .filter(p => p.categoryId === product.categoryId && p.id !== product.id)
         .slice(0, 5);
 
     const discount = product.oldPrice
@@ -51,68 +54,56 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
 
     return (
         <div className="pd-page">
-        <div className="pd-container">
+            <div className="pd-container">
+                <button className="pd-back" onClick={onBack}>
+                    <ArrowLeft size={16} /> Volver a la tienda
+                </button>
 
-            {/* Back Button */}
-            <button className="pd-back" onClick={onBack}>
-            <ArrowLeft size={16} />
-            Volver a la tienda
-            </button>
-
-            {/* ── TOP SECTION: 3 columns ── */}
-            <div className="pd-top-grid">
-
-            {/* Col 1 – Image */}
-            <div className="pd-image-wrap">
-                <img
-                id="package-image"
-                src={product.image || 'https://images.unsplash.com/photo-1542204172-658a09b6b5e7?w=800&q=80'}
-                alt={product.title}
-                className="pd-image"
-                />
-            </div>
-
-            {/* Col 2 – Info, Price & Buttons */}
-            <div className="pd-info">
-                <span className="pd-badge-stock" style={{ color: isOutOfStock ? '#ef4444' : '#22c55e', borderColor: isOutOfStock ? '#ef4444' : '#22c55e', border: '1px solid' }}>
-                    {isOutOfStock ? 'AGOTADO' : `${product.stock} unidades disponibles`}
-                </span>
-
-                <h1 className="pd-title">{product.name || product.title}</h1>
-
-                <div className="pd-pricing">
-                {product.oldPrice && (
-                    <div className="pd-old-price-row">
-                    <span className="pd-old-price">ARS {product.oldPrice.toLocaleString('es-AR')}</span>
-                    {discount && <span className="pd-discount-tag">-{discount}%</span>}
+                <div className="pd-top-grid">
+                    {/* Col 1 – Imagen Dinámica */}
+                    <div className="pd-image-wrap">
+                        <img
+                            key={currentDisplayImage}
+                            id="package-image"
+                            src={currentDisplayImage}
+                            alt={product.name}
+                            className="pd-image-fluid"
+                        />
                     </div>
-                )}
-                <div className="pd-current-price">
-                    ARS {product.price.toLocaleString('es-AR')}
-                </div>
-                {/* <p className="pd-price-note">Pasarela de Mercado Pago</p> */}
-                </div>
 
-                {/* Variant selector */}
-                <div className="pd-variants">
-
-                    {/* 1. OCULTAR TAMAÑO: Accedemos a product.category.name */}
-                    {product.weight && product.category?.name?.toLowerCase() !== 'accesorios' && (
-                        <span className="pd-price-note">
-                            Tamaño: {product.weight >= 1000 ? `${product.weight / 1000}kg` : `${product.weight}g`}
+                    {/* Col 2 – Info, Price & Buttons */}
+                    <div className="pd-info">
+                        <span className="pd-badge-stock" style={{ 
+                            color: isOutOfStock ? '#ef4444' : '#22c55e', 
+                            borderColor: isOutOfStock ? '#ef4444' : '#22c55e', 
+                            border: '1px solid' 
+                        }}>
+                            {isOutOfStock ? 'AGOTADO' : `${selectedVariant ? selectedVariant.stock : totalStock} unidades disponibles`}
                         </span>
-                    )}
 
-                    {(() => {
-                        // Extraemos el nombre de la categoría de forma segura
-                        const categoryName = product.category?.name?.toLowerCase() || "";
-                        const isAccesorio = categoryName === 'accesorios';
-                        
-                        const labelText = isAccesorio ? 'Opciones:' : 'Opciones de sabor:';
-                        const missingLabelText = isAccesorio ? '⚠️ Seleccioná una opción:' : '⚠️ Seleccioná un sabor:';
+                        <h1 className="pd-title">{product.name}</h1>
 
-                        if (flavorsList.length > 0) {
-                            return (
+                        <div className="pd-pricing">
+                            {product.oldPrice && (
+                                <div className="pd-old-price-row">
+                                    <span className="pd-old-price">ARS {product.oldPrice.toLocaleString('es-AR')}</span>
+                                    {discount && <span className="pd-discount-tag">-{discount}%</span>}
+                                </div>
+                            )}
+                            <div className="pd-current-price">
+                                ARS {product.price.toLocaleString('es-AR')}
+                            </div>
+                        </div>
+
+                        {/* Variant selector (SABORES) */}
+                        <div className="pd-variants">
+                            {product.weight && product.category?.name?.toLowerCase() !== 'accesorios' && (
+                                <span className="pd-price-note">
+                                    Tamaño: {product.weight >= 1000 ? `${product.weight / 1000}kg` : `${product.weight}g`}
+                                </span>
+                            )}
+
+                            {variants.length > 0 ? (
                                 <>
                                     <h4 style={{ 
                                         color: isSelectionMissing ? 'var(--primary)' : '#aaa', 
@@ -120,137 +111,114 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                                         marginBottom: '0.2rem', 
                                         transition: 'color 0.3s' 
                                     }}>
-                                        {isSelectionMissing ? missingLabelText : labelText}
+                                        {isSelectionMissing ? '⚠️ Seleccioná un sabor:' : 'Opciones de sabor:'}
                                     </h4>
                                     
-                                    {flavorsList.map((flavor, index) => (
+                                    {variants.map((v) => (
                                         <label 
-                                            key={index} 
-                                            onClick={() => !isOutOfStock && setSelectedFlavor(flavor)} 
-                                            className={`pd-variant ${selectedFlavor === flavor ? 'active' : ''}`} 
-                                            style={{ cursor: isOutOfStock ? 'not-allowed' : 'pointer' }}
+                                            key={v.id} 
+                                            onClick={() => v.stock > 0 && setSelectedVariant(v)} 
+                                            className={`pd-variant ${selectedVariant?.id === v.id ? 'active' : ''} ${v.stock <= 0 ? 'disabled' : ''}`}
+                                            style={{ 
+                                                cursor: v.stock <= 0 ? 'not-allowed' : 'pointer',
+                                                opacity: v.stock <= 0 ? 0.5 : 1
+                                            }}
                                         >
-                                            <span className="pd-variant-radio" style={{ background: selectedFlavor === flavor ? 'var(--primary)' : 'transparent' }}></span>
+                                            <span className="pd-variant-radio" style={{ background: selectedVariant?.id === v.id ? 'var(--primary)' : 'transparent' }}></span>
                                             <div className="pd-variant-info">
-                                                <span className="pd-variant-name">{flavor}</span>
-                                                {!isOutOfStock && (
-                                                    <span className="pd-variant-stock" style={{ color: selectedFlavor === flavor ? 'var(--primary)' : '#888' }}>
-                                                        {selectedFlavor === flavor ? 'Seleccionado' : 'Seleccionar'}
-                                                    </span>
-                                                )}
+                                                <span className="pd-variant-name">{v.flavor}</span>
+                                                <span className="pd-variant-stock" style={{ color: selectedVariant?.id === v.id ? 'var(--primary)' : '#888' }}>
+                                                    {v.stock > 0 ? (selectedVariant?.id === v.id ? 'Seleccionado' : 'Disponible') : 'Sin Stock'}
+                                                </span>
                                             </div>
                                         </label>
                                     ))}
                                 </>
-                            );
-                        } else {
-                            return (
-                                <>
-                                    <h4 style={{ color: '#aaa', fontSize: '0.85rem', marginBottom: '0.2rem' }}>
-                                        {labelText}
-                                    </h4>
-                                    <label className="pd-variant active">
-                                        <span className="pd-variant-radio"></span>
-                                        <div className="pd-variant-info">
-                                            <span className="pd-variant-name">
-                                                {isAccesorio ? 'Opción Única' : 'Sabor Único'}
-                                            </span>
-                                            <span className="pd-variant-stock">{isOutOfStock ? 'Sin unidades' : 'Stock verificado'}</span>
-                                        </div>
-                                    </label>
-                                </>
-                            );
-                        }
-                    })()}
-                </div>
+                            ) : (
+                                <p className="pd-price-note">No hay variantes disponibles.</p>
+                            )}
+                        </div>
+        
+                        {/* Action buttons */}
+                        <div className="pd-actions">
+                            <button 
+                                className="pd-btn-buy" 
+                                disabled={isActionDisabled} 
+                                style={{ opacity: isActionDisabled ? 0.5 : 1, cursor: isActionDisabled ? 'not-allowed' : 'pointer' }} 
+                                onClick={() => addToCart({ ...product, selectedFlavor: selectedVariant?.flavor })}
+                            >
+                                <ShoppingBasket size={18} />
+                                {isSelectionMissing ? 'Elegí un sabor' : 'Comprar ahora'}
+                            </button>
+                            <button 
+                                className="pd-btn-cart" 
+                                disabled={isActionDisabled} 
+                                style={{ opacity: isActionDisabled ? 0.5 : 1, cursor: isActionDisabled ? 'not-allowed' : 'pointer' }} 
+                                onClick={() => addToCart({ ...product, selectedFlavor: selectedVariant?.flavor })}
+                            >
+                                <Plus size={18} />
+                                {isSelectionMissing ? 'Elegí un sabor' : 'Añadir al carrito'}
+                            </button>
+                        </div>
+                    </div>
 
-                {/* Action buttons */}
-                <div className="pd-actions">
-                <button 
-                    className="pd-btn-buy" 
-                    disabled={isActionDisabled} 
-                    style={{ opacity: isActionDisabled ? 0.5 : 1, cursor: isActionDisabled ? 'not-allowed' : 'pointer' }} 
-                    onClick={() => addToCart({ ...product, selectedFlavor })}
-                >
-                    <ShoppingBasket size={18} />
-                    {isSelectionMissing ? 'Elegí un sabor' : 'Comprar ahora'}
-                </button>
-                <button 
-                    className="pd-btn-cart" 
-                    disabled={isActionDisabled} 
-                    style={{ opacity: isActionDisabled ? 0.5 : 1, cursor: isActionDisabled ? 'not-allowed' : 'pointer' }} 
-                    onClick={() => addToCart({ ...product, selectedFlavor })}
-                >
-                    <Plus size={18} />
-                    {isSelectionMissing ? 'Elegí un sabor' : 'Añadir al carrito'}
-                </button>
-                </div>
-            </div>
+                    {/* Col 3 – Trust Sidebar */}
+                    <div className="pd-trust">
+                        <div className="pd-trust-card">
+                            <div className="pd-trust-icon"><PackageCheck size={20} /></div>
+                            <div>
+                                <h4>Entrega inmediata</h4>
+                                <p>Enviamos tu producto inmediatamente después del pago.</p>
+                            </div>
+                        </div>
 
-            {/* Col 3 – Trust Sidebar */}
-            <div className="pd-trust">
-                <div className="pd-trust-card">
-                <div className="pd-trust-icon"><PackageCheck size={20} /></div>
-                <div>
-                    <h4>Entrega inmediata</h4>
-                    <p>Enviamos tu producto inmediatamente después del pago.</p>
-                </div>
-                </div>
+                        <div className="pd-trust-card">
+                            <div className="pd-trust-icon"><ShieldCheck size={20} /></div>
+                            <div>
+                                <h4>Seguridad total</h4>
+                                <p>Tus datos están cifrados de extremo a extremo durante todo el proceso.</p>
+                            </div>
+                        </div>
 
-                <div className="pd-trust-card">
-                <div className="pd-trust-icon"><ShieldCheck size={20} /></div>
-                <div>
-                    <h4>Seguridad total</h4>
-                    <p>Tus datos están cifrados de extremo a extremo durante todo el proceso.</p>
-                </div>
-                </div>
-
-                <div className="pd-trust-card">
-                <div className="pd-trust-icon"><CreditCard size={20} /></div>
-                <div>
-                    <h4>Formas de pago</h4>
-                    <p>Aceptamos los medios de pago más populares.</p>
-                    <div className="pd-payment-icons">
-                    <img src="/mercadopago-logo.png" alt="Mercado Pago" />
-                    <img src="/visa.png" alt="visa" />
-                    <img src="/mastercard.png" alt="mastercard" />
+                        <div className="pd-trust-card">
+                            <div className="pd-trust-icon"><CreditCard size={20} /></div>
+                            <div>
+                                <h4>Formas de pago</h4>
+                                <p>Aceptamos los medios de pago más populares.</p>
+                                <div className="pd-payment-icons">
+                                    <img src="/mercadopago-logo.png" alt="Mercado Pago" />
+                                    <img src="/visa.png" alt="visa" />
+                                    <img src="/mastercard.png" alt="mastercard" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                </div>
-            </div>
-            </div>
 
-            {/* ── DESCRIPTION ── */}
-            <div className="pd-description">
-            <h3 className="pd-section-title">Descripción</h3>
-            <div className="pd-description-content">
-                {product.description ? (
-                    product.description.split('\n').map((line, idx) => (
-                    <p key={idx}>{line}</p>
-                    ))
-                ) : (
-                    <p>No hay descripción disponible para este producto.</p>
+                <div className="pd-description">
+                    <h3 className="pd-section-title">Descripción</h3>
+                    <div className="pd-description-content">
+                        {product.description?.split('\n').map((line, idx) => (
+                            <p key={idx}>{line}</p>
+                        )) || <p>No hay descripción disponible.</p>}
+                    </div>
+                </div>
+
+                {similarProducts.length > 0 && (
+                    <div className="pd-similar">
+                        <h3 className="pd-similar-title">Productos similares</h3>
+                        <div className="pd-similar-grid">
+                            {similarProducts.map(p => (
+                                <ProductCard
+                                    key={p.id}
+                                    product={p}
+                                    onDetail={() => onProductClick(p)}
+                                />
+                            ))}
+                        </div>
+                    </div>
                 )}
             </div>
-            </div>
-
-            {/* ── SIMILAR PRODUCTS ── */}
-            {similarProducts.length > 0 && (
-            <div className="pd-similar">
-                <h3 className="pd-similar-title">Productos similares</h3>
-                <div className="pd-similar-grid">
-                {similarProducts.map(p => (
-                    <ProductCard
-                    key={p.id}
-                    product={p}
-                    onDetail={() => onProductClick(p)}
-                    />
-                ))}
-                </div>
-            </div>
-            )}
-
-        </div>
         </div>
     );
 };

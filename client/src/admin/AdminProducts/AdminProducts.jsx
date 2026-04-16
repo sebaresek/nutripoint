@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Search, Edit3, Trash2, Image as ImageIcon, Save, X, CheckCircle2, AlertCircle, Loader2, ChevronDown } from 'lucide-react';
+import { Plus, Search, Edit3, Trash2, Image as ImageIcon, Save, X, CheckCircle2, AlertCircle, Loader2, ChevronDown, } from 'lucide-react';
 import { useOutletContext } from 'react-router-dom';
 import styles from './AdminProducts.module.css';
 const API_URL = import.meta.env.VITE_API_URL;
@@ -13,6 +13,25 @@ const { products, setProducts, categories } = useOutletContext();
     const [status, setStatus] = useState({ show: false, message: '', type: 'success' });
     const [productToDelete, setProductToDelete] = useState(null); // Corregido el nombre
     const [editingId, setEditingId] = useState(null);
+    // Agrega esto junto a tus otros estados
+    const [variants, setVariants] = useState([{ flavor: '', stock: 0, image: '' }]);
+
+    // Funciones para manejar la lista dinámica
+    const addVariant = () => {
+        setVariants([...variants, { flavor: '', stock: 0, image: '' }]);
+    };
+
+    const updateVariant = (index, field, value) => {
+        const newVariants = [...variants];
+        newVariants[index][field] = field === 'stock' ? Number(value) : value;
+        setVariants(newVariants);
+    };
+
+    const removeVariant = (index) => {
+        if (variants.length > 1) {
+            setVariants(variants.filter((_, i) => i !== index));
+        }
+    };
 
     const [formData, setFormData] = useState({
         name: '', 
@@ -50,6 +69,11 @@ const { products, setProducts, categories } = useOutletContext();
                 stock: product.stock !== undefined ? product.stock : '',
                 weight: product.weight || '1000'
             });
+            if (product.variants && product.variants.length > 0) {
+            setVariants(product.variants);
+            } else {
+                setVariants([{ flavor: '', stock: 0, image: '' }]);
+            }
         } else {
             setEditingId(null);
             setFormData({ name: '', price: '', oldPrice: '', category: categories[0]?.name || '', image: '', description: '', flavors: '', stock: '' });
@@ -67,6 +91,9 @@ const { products, setProducts, categories } = useOutletContext();
         e.preventDefault();
         setStatus({ show: true, message: 'Guardando...', type: 'loading' });
 
+        console.log("🚀 ENVIANDO DATOS AL BACKEND...");
+        console.log("FormData:", formData);
+        console.log("Variants a enviar:", variants);
         const newProductData = {
             title: formData.name, 
             price: Number(formData.price),
@@ -76,7 +103,8 @@ const { products, setProducts, categories } = useOutletContext();
             description: formData.description,
             flavors: formData.flavors,
             stock: formData.stock ? Number(formData.stock) : 0,
-            weight: Number(formData.weight)
+            weight: Number(formData.weight),
+            variants: variants
         };
 
         try {
@@ -231,10 +259,18 @@ const { products, setProducts, categories } = useOutletContext();
                                 </div>
                             </div>
 
-                            <div className={styles['item-stock']} style={{ color: item.stock > 0 ? '#22c55e' : '#ef4444', fontWeight: 'bold', paddingRight: '20px' }}>
+                            {/* <div className={styles['item-stock']} style={{ color: item.stock > 0 ? '#22c55e' : '#ef4444', fontWeight: 'bold', paddingRight: '20px' }}>
                                 {item.stock} u.
+                            </div> */}
+                            <div className={styles['item-stock']} style={{ 
+                                // Sumamos el stock de todas las variantes del producto
+                                color: (item.variants?.reduce((acc, v) => acc + (v.stock || 0), 0)) > 0 ? '#22c55e' : '#ef4444', 
+                                fontWeight: 'bold', 
+                                paddingRight: '20px' 
+                            }}>
+                                {/* Mostramos la suma total */}
+                                {item.variants?.reduce((acc, v) => acc + (v.stock || 0), 0) || 0} u.
                             </div>
-
                             <div className={styles['item-actions']}>
                                 {/* Busca dentro de filteredProducts.map(item => ...) */}
                                 <div className={styles['item-actions']}>
@@ -266,7 +302,7 @@ const { products, setProducts, categories } = useOutletContext();
                         <form onSubmit={handleSave} className={styles['modal-form']}>
 
                             <div className={styles['form-group']}>
-                                <label>Título del Producto</label>
+                                {/* <label>Título del Producto</label> */}
                                 <input required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} placeholder="Ej: Whey Protein..." />
                             </div>
 
@@ -281,10 +317,56 @@ const { products, setProducts, categories } = useOutletContext();
                                     <input className={styles['no-arrows']} type="number" value={formData.oldPrice} onChange={e => setFormData({...formData, oldPrice: e.target.value})} />
                                 </div>
 
-                                <div className={styles['form-group']}>
+                                {/* <div className={styles['form-group']}>
                                     <label>Stock Disponible</label>
                                     <input className={styles['no-arrows']} type="number" value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} />
+                                </div> */}
+
+                                {/* Reemplaza el input viejo de sabores por esto: */}
+                                <div className={styles['form-group']} style={{ gridColumn: 'span 2', marginTop: '1rem' }}>
+                                    <label style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                        Variantes por Sabor
+
+                                    </label>
+                                    <div>
+                                        <button type="button" 
+                                            onClick={addVariant} 
+                                            className={styles['add-variant-btn']}>
+                                                <Plus size={20}/>
+                                        </button>
+                                    </div>
+                                    
+                                    <div className={styles['variants-container']}>
+                                        {variants.map((v, index) => (
+                                            <div key={index} className={styles['variant-row']} style={{ display: 'grid', gridTemplateColumns: '1fr 80px 1fr auto', gap: '8px', marginBottom: '8px' }}>
+                                                <input 
+                                                    placeholder="Sabor" 
+                                                    value={v.flavor} 
+                                                    onChange={(e) => updateVariant(index, 'flavor', e.target.value)} 
+                                                />
+                                                <input 
+                                                    className={styles['no-arrows']}
+                                                    type="number" 
+                                                    required
+                                                    placeholder="Stock" 
+                                                    value={v.stock === 0 ? '' : v.stock} 
+                                                    onChange={(e) => updateVariant(index, 'stock', e.target.value)} 
+                                                />
+                                                <input 
+                                                    placeholder="URL Imagen" 
+                                                    value={v.image} 
+                                                    onChange={(e) => updateVariant(index, 'image', e.target.value)} 
+                                                />
+                                                {variants.length > 1 && (
+                                                    <button type="button" onClick={() => removeVariant(index)} className={styles['del-variant-btn']}>
+                                                        <X size={16} />
+                                                    </button>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
+
 
                                 <div className={styles['form-group']}>
                                     <label>Peso (gramos)</label>
@@ -297,17 +379,6 @@ const { products, setProducts, categories } = useOutletContext();
                                         placeholder="Ej: 1000"
                                     />
                                 </div>
-
-                                <div className={styles['form-group']}>
-                                    <label>Sabores</label>
-                                    <input  
-                                    className={styles['no-arrows']} 
-                                    type="text" 
-                                    value={formData.flavors} 
-                                    onChange={e => setFormData({...formData, flavors: e.target.value})} />
-                                </div>
-
-
                                 {/* ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA */}
 
                                 <div className={styles['form-group']}>

@@ -16,21 +16,32 @@ model Category {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
+  id          Int              @id @default(autoincrement())
   name        String
   description String?
   price       Float
-  oldPrice    Float?      @default(0)
-  stock       Int         @default(0)
-  weight      Int         @default(1000)
-  image       String?
-  flavors     String[]
-  createdAt   DateTime    @default(now())
+  oldPrice    Float?           @default(0)
+  image       String?          // Imagen principal/portada
+  weight      Int              @default(1000)
   categoryId  Int
+  category    Category         @relation(fields: [categoryId], references: [id])
+  // NUEVO: Relación con variantes
+  variants    ProductVariant[] 
   orderItems  OrderItem[]
-  category    Category    @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime         @default(now())
 
   @@map("Products")
+}
+
+model ProductVariant {
+  id        Int     @id @default(autoincrement())
+  flavor    String  // Ejemplo: "Chocolate"
+  stock     Int     @default(0)
+  image     String? // Imagen específica del sabor
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("ProductVariants")
 }
 
 model Order {

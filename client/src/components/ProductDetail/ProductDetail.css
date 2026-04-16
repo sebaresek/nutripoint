@@ -40,7 +40,7 @@
   margin-bottom: 2rem; 
 }
 
-.pd-image-wrap { 
+/* .pd-image-wrap { 
   border-radius: 12px; 
   overflow: hidden; 
   background: #0d0d0d; 
@@ -50,6 +50,35 @@
   align-items: center; 
   justify-content: center; 
   padding: 1rem; 
+} */
+
+.pd-image-wrap {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  background: #111; /* O el color de tu fondo */
+}
+
+.pd-image-fluid {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  /* Aplicamos una animación de entrada cada vez que el elemento se crea */
+  animation: imageFadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes imageFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .pd-image { 
@@ -58,8 +87,14 @@
   max-height: 450px; 
   object-fit: contain; 
   display: block; 
+  opacity: 1; /* Visible por defecto */
+  transition: opacity 0.3s ease-in-out;
 }
 
+/* Cuando esta clase está presente, la imagen se oculta */
+.pd-image-fading {
+    opacity: 0;
+}
 .pd-info { 
   display: flex; 
   flex-direction: column; 
