@@ -17,6 +17,7 @@ import { auth } from './utils/firebase';
 import HomePage from './views/HomePage/HomePage';
 import DetailPage from './views/DetailPage/DetailPage';
 import PaymentSuccess from './views/PaymentSuccess/PaymentSuccess'; 
+import PaymentFailure from './views/PaymentFailure/PaymentFailure';
 import UserDashboard from './views/UserDashboard/UserDashboard';
 import CheckoutPage from './views/CheckoutPage/CheckoutPage'; 
 import TermsAndConditions from './views/TermsAndConditions/TermsAndConditions';
@@ -63,7 +64,8 @@ const AppContent = ({ products, setProducts, categories, setCategories, user }) 
                     <Route path="/terminos-y-condiciones" element={<TermsAndConditions />} />
                     <Route path="/envios-y-devoluciones" element={<ShippingPolicy />} />
                     <Route path="/preguntas-frecuentes" element={<FaqPage />} />
-                    <Route path="/payment-success" element={<PaymentSuccess />} />
+                    <Route path="/success" element={<PaymentSuccess />} />
+                    <Route path="/failure" element={<PaymentFailure />} />
                     <Route path="profile" element={user ? <UserDashboard /> : <Navigate to="/" /> } />
 
                     <Route path="/admin" element={<AdminLayout products={products} setProducts={setProducts} categories={categories} setCategories={setCategories} />}>

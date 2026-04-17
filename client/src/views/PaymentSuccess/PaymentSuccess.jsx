@@ -1,31 +1,49 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
+import styles from './PaymentSuccess.module.css'; // <--- IMPORTANTE
 
 const PaymentSuccess = () => {
+    const { clearCart } = useCart();
+    const hasCleared = useRef(false);
+
+    useEffect(() => {
+        if (!hasCleared.current) {
+            clearCart();
+            hasCleared.current = true;
+        }
+    }, [clearCart]);
+
     return (
-        <div style={{ 
-        display: 'flex', 
-        flexDirection: 'column', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        height: '100vh', 
-        background: '#0d0d0d',
-        color: 'white' 
-        }}>
-        <CheckCircle size={80} color="#00ff00" />
-        <h1 style={{ marginTop: '20px' }}>¡Pago Confirmado!</h1>
-        <p>Tu pedido de NutriPoint está en camino.</p>
-        <Link to="/" style={{ 
-            marginTop: '20px', 
-            padding: '10px 20px', 
-            background: '#009ee3', 
-            color: 'white', 
-            borderRadius: '8px', 
-            textDecoration: 'none' 
-        }}>
-            Volver a la tienda
-        </Link>
+        <div className={styles.container}>
+            <motion.div 
+                className={styles.card}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+            >
+                <motion.div 
+                    className={styles.iconWrapper}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
+                >
+                    <CheckCircle size={40} strokeWidth={2.5} />
+                </motion.div>
+
+                <h1 className={styles.title}>¡Pago Confirmado!</h1>
+                
+                <p className={styles.description}>
+                    Tu pedido de NutriPoint está siendo procesado. 
+                    Te enviaremos un correo con los detalles de tu envío.
+                </p>
+
+                <Link to="/" className={styles.button}>
+                    Volver a la tienda
+                </Link>
+            </motion.div>
         </div>
     );
 };
