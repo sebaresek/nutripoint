@@ -84,7 +84,7 @@ const createOrder = async (req, res) => {
                 notification_url: "https://api.nutripoint.site/api/orders/webhook", 
                 back_urls: {
                     success: "https://nutripoint.site/success",
-                    failure: "https://nutripoint.site/cart",
+                    failure: "https://nutripoint.site/failure",
                 },
                 auto_return: "approved",
             }
