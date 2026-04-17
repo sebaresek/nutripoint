@@ -14,29 +14,31 @@ const AdminDashboard = () => {
     });
 
     useEffect(() => {
-        if (products) {
-            const totalValue = products.reduce((acc, curr) => {
-                // 1. Aseguramos que el precio sea un número [cite: 2]
-                const price = Number(curr.price) || 0;
+            if (products) {
+                // 1. DEFINIMOS LA VARIABLE AQUÍ ABAJO
+                let cumulativeStock = 0;
 
-                // 2. Corregimos el origen del stock: 
-                // En tu esquema, el stock está en 'variants', no en el producto raíz 
-                const totalProductStock = curr.variants?.reduce((sum, variant) => {
-                    return sum + (Number(variant.stock) || 0);
-                }, 0) || 0;
+                const totalValue = products.reduce((acc, curr) => {
+                    const price = Number(curr.price) || 0;
 
-                // 3. Sumamos al acumulador: (Precio del producto * Stock total de sus variantes)
-                return acc + (price * totalProductStock);
-            }, 0);
+                    const totalProductStock = curr.variants?.reduce((sum, variant) => {
+                        return sum + (Number(variant.stock) || 0);
+                    }, 0) || 0;
 
-            setStats({
-                activeProducts: products.length,
-                inventoryValue: totalValue,
-                totalCategories: categories?.length || 0,
-                totalStock: cumulativeStock
-            });
-        }
-    }, [products, categories]);
+                    // 2. VAMOS SUMANDO AL TOTAL GLOBAL
+                    cumulativeStock += totalProductStock;
+
+                    return acc + (price * totalProductStock);
+                }, 0);
+
+                setStats({
+                    activeProducts: products.length,
+                    inventoryValue: totalValue,
+                    totalCategories: categories?.length || 0,
+                    totalStock: cumulativeStock // <--- AHORA SÍ EXISTE
+                });
+            }
+        }, [products, categories]);
 
     return (
         <div className="dashboard-content">
