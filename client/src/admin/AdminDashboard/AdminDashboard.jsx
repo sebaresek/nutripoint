@@ -74,7 +74,7 @@ const AdminDashboard = () => {
                 <div className="stat-card glass">
                     <div className="stat-icon"><TrendingUp size={24} color="#22c55e" /></div>
                     <div className="stat-body">
-                        <h3>${stats.inventoryValue.toLocaleString('es-AR')}</h3>
+                        <h3>$ {stats.inventoryValue.toLocaleString('es-AR')}</h3>
                         <span>Valor Total Inventario</span>
                     </div>
                 </div>
