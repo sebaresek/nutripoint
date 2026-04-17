@@ -342,6 +342,7 @@ const { products, setProducts, categories } = useOutletContext();
                                                     onChange={(e) => updateVariant(index, 'flavor', e.target.value)} 
                                                 />
                                                 <input 
+                                                    className={styles['no-arrows']}
                                                     type="number" 
                                                     required
                                                     placeholder="Stock" 

@@ -9,7 +9,8 @@ const AdminDashboard = () => {
     const [stats, setStats] = useState({
         activeProducts: 0,
         inventoryValue: 0,
-        totalCategories: 0
+        totalCategories: 0,
+        totalStock: 0
     });
 
     useEffect(() => {
@@ -31,7 +32,8 @@ const AdminDashboard = () => {
             setStats({
                 activeProducts: products.length,
                 inventoryValue: totalValue,
-                totalCategories: categories?.length || 0
+                totalCategories: categories?.length || 0,
+                totalStock: cumulativeStock
             });
         }
     }, [products, categories]);
@@ -47,6 +49,15 @@ const AdminDashboard = () => {
                     <div className="stat-body">
                         <h3>{stats.activeProducts}</h3>
                         <span>Productos Activos</span>
+                    </div>
+                </div>
+
+                {/* Nueva Carta: Unidades Totales */}
+                <div className="stat-card glass">
+                    <div className="stat-icon"><Package size={24} color="#f59e0b" /></div> {/* Color naranja/ámbar */}
+                    <div className="stat-body">
+                        <h3>{stats.totalStock}</h3>
+                        <span>Unidades en Stock</span>
                     </div>
                 </div>
                 
