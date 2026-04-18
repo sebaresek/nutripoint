@@ -5,10 +5,10 @@ const client = new MercadoPagoConfig({ accessToken: process.env.MP_ACCESS_TOKEN 
 
 const createOrder = async (req, res) => {
     console.log("📥 Petición recibida en /api/orders");
-    console.log("👤 Body recibido:", JSON.stringify(req.body, null, 2)); // LOG 1
+    console.log("👤 Body recibido:", JSON.stringify(req.body, null, 2));
 
     try {
-        const { items, userId, fullName, phone, address, postalCode, province, city, notes, shippingMethod, shippingCost, email} = req.body;
+        const { items, userId, fullName, phone, address, postalCode, province, city, notes, shippingMethod, shippingCost, email } = req.body;
         console.log("🔍 Verificando campos: ", { userId, itemsLength: items?.length });
 
         // 1. Actualización de Usuario
@@ -19,7 +19,26 @@ const createOrder = async (req, res) => {
         });
         console.log("✅ Perfil actualizado");
 
-        const productsTotal = items.reduce((acc, i) => acc + (Number(i.price) * Number(i.quantity)), 0);
+        // --- NUEVA VALIDACIÓN DE SEGURIDAD: PRECIOS REALES ---
+        // Buscamos los productos en la base de datos para obtener el precio real y evitar manipulaciones del front
+        const itemsWithValidatedPrices = await Promise.all(items.map(async (item) => {
+            const dbProduct = await prisma.product.findUnique({
+                where: { id: item.id },
+                select: { price: true, name: true }
+            });
+
+            if (!dbProduct) {
+                throw new Error(`El producto con ID ${item.id} ya no existe en el catálogo.`);
+            }
+
+            return {
+                ...item,
+                price: dbProduct.price, // Sobrescribimos el precio del body con el de la DB
+                validatedTitle: dbProduct.name
+            };
+        }));
+
+        const productsTotal = itemsWithValidatedPrices.reduce((acc, i) => acc + (Number(i.price) * Number(i.quantity)), 0);
         const total = productsTotal + Number(shippingCost || 0);
 
         // 2. Creación de Orden
@@ -38,28 +57,28 @@ const createOrder = async (req, res) => {
                 shippingCost: Number(shippingCost || 0),
                 shippingMethod: shippingMethod,
                 items: {
-                    create: items.map(item => {
-                                    // Buscamos el ID de la variante que coincida con el sabor seleccionado
-                                    const selectedVariant = item.variants?.find(v => v.flavor === item.selectedFlavor);
-                                    
-                                    return {
-                                        productId: item.id,
-                                        // Si encuentra la variante usa ese ID, si no, usa el variantId que venga o null
-                                        variantId: selectedVariant ? selectedVariant.id : (item.variantId || null),
-                                        quantity: item.quantity,
-                                        price: item.price
-                                    };
-                                })
-                            }
-                        }
-                    });
+                    create: itemsWithValidatedPrices.map(item => {
+                        // Buscamos el ID de la variante que coincida con el sabor seleccionado
+                        const selectedVariant = item.variants?.find(v => v.flavor === item.selectedFlavor);
+                        
+                        return {
+                            productId: item.id,
+                            // Si encuentra la variante usa ese ID, si no, usa el variantId que venga o null
+                            variantId: selectedVariant ? selectedVariant.id : (item.variantId || null),
+                            quantity: item.quantity,
+                            price: item.price // Precio validado de la DB
+                        };
+                    })
+                }
+            }
+        });
         console.log("✅ Orden creada ID:", newOrder.id);
 
         // 3. Mercado Pago
-        const mpItems = items.map(item => ({
+        const mpItems = itemsWithValidatedPrices.map(item => ({
             id: item.id.toString(),
-            title: item.title || item.name,
-            unit_price: Number(item.price),
+            title: item.validatedTitle || item.title || item.name,
+            unit_price: Number(item.price), // Precio validado de la DB
             quantity: Number(item.quantity),
             currency_id: 'ARS'
         }));
@@ -74,7 +93,6 @@ const createOrder = async (req, res) => {
             });
         }
         
-        // 3. Mercado Pago
         console.log("💸 Solicitando preferencia a Mercado Pago...");
         const preference = new Preference(client);
         const result = await preference.create({
@@ -93,8 +111,8 @@ const createOrder = async (req, res) => {
         res.json({ id: newOrder.id, init_point: result.init_point });
 
     } catch (error) {
-        console.error("❌ ERROR EN CREATE ORDER:"); // LOG DE ERROR
-        console.error(error); // Esto te va a decir si es Prisma, MP o un campo nulo
+        console.error("❌ ERROR EN CREATE ORDER:");
+        console.error(error);
         res.status(500).json({ 
             error: error.message, 
             stack: process.env.NODE_ENV === 'development' ? error.stack : undefined 
