@@ -34,20 +34,6 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
         }
     }, [product?.id, variants.length]);
 
-    useEffect(() => {
-        // Al entrar al detalle, podemos pedirle al servidor los datos frescos de este producto
-        // Esto asegura que si el precio cambió mientras navegaba, se actualice aquí
-        fetch(`${import.meta.env.VITE_API_URL}/admin/products`) // O una ruta específica por ID si la tienes
-            .then(res => res.json())
-            .then(data => {
-                const freshProduct = data.find(p => p.id === product.id);
-                if (freshProduct && freshProduct.price !== product.price) {
-                    console.log("💰 Precio actualizado en detalle");
-                    // Aquí podrías disparar una función para actualizar el estado global si es necesario
-                }
-            });
-    }, [product.id]);
-
     if (!product) return null;
 
     // Lógica de stock y deshabilitación
@@ -169,7 +155,7 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                                 className="pd-btn-buy" 
                                 disabled={isActionDisabled} 
                                 style={{ opacity: isActionDisabled ? 0.5 : 1, cursor: isActionDisabled ? 'not-allowed' : 'pointer' }} 
-                                onClick={() => addToCart({ ...product, selectedFlavor: selectedVariant?.flavor })}
+                                onClick={() => addToCart({ ...product, selectedFlavor: selectedVariant?.flavor, stock: selectedVariant?.stock })}
                             >
                                 <ShoppingBasket size={18} />
                                 {isSelectionMissing ? 'Elegí un sabor' : 'Comprar ahora'}
@@ -178,7 +164,7 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                                 className="pd-btn-cart" 
                                 disabled={isActionDisabled} 
                                 style={{ opacity: isActionDisabled ? 0.5 : 1, cursor: isActionDisabled ? 'not-allowed' : 'pointer' }} 
-                                onClick={() => addToCart({ ...product, selectedFlavor: selectedVariant?.flavor })}
+                                onClick={() => addToCart({ ...product, selectedFlavor: selectedVariant?.flavor, stock: selectedVariant?.stock })}
                             >
                                 <Plus size={18} />
                                 {isSelectionMissing ? 'Elegí un sabor' : 'Añadir al carrito'}

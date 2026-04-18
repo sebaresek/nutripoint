@@ -89,29 +89,10 @@ const App = () => {
     const [user, loading] = useAuthState(auth);
 
     useEffect(() => {
-        const fetchProducts = () => {
-            fetch(`${API_URL}/admin/products`)
-                .then(res => res.json())
-                .then(data => setProducts(data))
-                .catch(err => console.error("Error API:", err));
-        };
-
-        // Carga inicial
-        fetchProducts();
-
-        // Revalidar cuando el usuario vuelve a la pestaña
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
-                console.log("🔄 Sincronizando precios...");
-                fetchProducts();
-            }
-        };
-
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-        
-        return () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
-        };
+        fetch(`${API_URL}/admin/products`)
+            .then(res => res.json())
+            .then(data => setProducts(data))
+            .catch(err => console.error("Error API:", err));
     }, []);
 
     if (loading) return null;

@@ -283,6 +283,18 @@
 
 }
 
+.disabledBtn {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+.stockLimitLabel {
+    font-size: 0.7rem;
+    color: #ff4d4d;
+    display: block;
+    margin-top: 4px;
+}
+
 .authWarning {
     background-color: rgba(0, 140, 255, 0.1);
     border: 1px solid #009ee3;

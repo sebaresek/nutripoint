@@ -57,6 +57,21 @@ const CartSidebar = () => {
     }, [user, isCartOpen]);
 
     useEffect(() => {
+        if (isCartOpen && cartItems.length > 0) {
+            // Consultar los precios más recientes de los productos que están en el carrito
+            const productIds = cartItems.map(item => item.id).join(',');
+            
+            fetch(`${API_URL}/products/validate?ids=${productIds}`)
+                .then(res => res.json())
+                .then(updatedProducts => {
+                    // Aquí actualizas el carrito con los precios reales del servidor
+                    // Si el precio cambió, el usuario lo verá reflejado antes de pagar
+                })
+                .catch(err => console.error("Error validando precios", err));
+        }
+    }, [isCartOpen]);
+
+    useEffect(() => {
         const calculateShipping = async () => {
             if (contactData.postalCode && contactData.postalCode.length === 4) {
                 setIsCalculatingShipping(true);
@@ -154,19 +169,18 @@ const CartSidebar = () => {
                                     <span className={styles.itemPrice}>ARS {item.price.toLocaleString('es-AR')}</span>
                                     <div className={styles.itemActions}>
                                         <div className={styles.quantityControls}>
-                                            <button onClick={() => updateQuantity(item.id, item.selectedFlavor, -1)}><Minus size={14} /></button>
+                                            <button onClick={() => updateQuantity(item.id, item.selectedFlavor, -1)}>
+                                                <Minus size={14} />
+                                            </button>
+
                                             <span>{item.quantity}</span>
+
                                             <button 
-                                                onClick={() => {
-                                                    // Validación antes de aumentar
-                                                    if (item.quantity + 1 > item.stock) {
-                                                        alert("No hay más stock disponible");
-                                                        return;
-                                                    }
-                                                    updateQuantity(item.id, item.quantity + 1);
-                                                }}
-                                                disabled={item.quantity >= item.stock}>
-                                                <Plus size={14} />
+                                            onClick={() => updateQuantity(item.id, item.selectedFlavor, 1)}
+                                            disabled={Number(item.quantity) >= Number(item.stock)}
+                                            className={Number(item.quantity) >= Number(item.stock) ? styles.disabledBtn : ''}
+                                            >
+                                            <Plus size={14} />
                                             </button>
                                         </div>
                                         <button className={styles.removeBtn} onClick={() => removeFromCart(item.id, item.selectedFlavor)}>

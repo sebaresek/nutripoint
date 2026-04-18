@@ -20,21 +20,35 @@ const createOrder = async (req, res) => {
         console.log("✅ Perfil actualizado");
 
         // --- NUEVA VALIDACIÓN DE SEGURIDAD: PRECIOS REALES ---
-        // Buscamos los productos en la base de datos para obtener el precio real y evitar manipulaciones del front
         const itemsWithValidatedPrices = await Promise.all(items.map(async (item) => {
+            // 1. Buscamos el producto E incluyendo sus variantes
             const dbProduct = await prisma.product.findUnique({
                 where: { id: item.id },
-                select: { price: true, name: true }
+                include: { variants: true } // <--- FUNDAMENTAL para validar stock y sabor
             });
 
             if (!dbProduct) {
-                throw new Error(`El producto con ID ${item.id} ya no existe en el catálogo.`);
+                throw new Error(`El producto ${item.name} ya no existe.`);
             }
 
+            // 2. Buscamos la variante específica del sabor
+            const selectedVariant = dbProduct.variants.find(v => v.flavor === item.selectedFlavor);
+            
+            if (!selectedVariant) {
+                throw new Error(`El sabor ${item.selectedFlavor} para ${dbProduct.name} no está disponible.`);
+            }
+
+            // 3. Validamos stock real de la variante
+            if (item.quantity > selectedVariant.stock) {
+                throw new Error(`Stock insuficiente para ${dbProduct.name} (${item.selectedFlavor}). Disponible: ${selectedVariant.stock}`);
+            }
+
+            // 4. RETORNAMOS EL PRECIO DE LA DB
             return {
                 ...item,
-                price: dbProduct.price, // Sobrescribimos el precio del body con el de la DB
-                validatedTitle: dbProduct.name
+                price: dbProduct.price, // Ignoramos el precio que mandó el front
+                validatedTitle: dbProduct.name,
+                variantId: selectedVariant.id // Ya guardamos el ID real de la variante para el stock luego
             };
         }));
 
