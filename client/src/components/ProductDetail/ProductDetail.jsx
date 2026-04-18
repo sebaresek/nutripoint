@@ -89,10 +89,15 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                         <h1 className="pd-title">{product.name}</h1>
 
                         <div className="pd-pricing">
-                            {product.oldPrice && (
+                            {product.oldPrice > 0 && (
                                 <div className="pd-old-price-row">
-                                    <span className="pd-old-price">ARS {product.oldPrice.toLocaleString('es-AR')}</span>
-                                    {discount && <span className="pd-discount-tag">-{discount}%</span>}
+                                    <span className="pd-old-price">
+                                        ARS {product.oldPrice.toLocaleString('es-AR')}
+                                    </span>
+                                    {discount && 
+                                    <span className="pd-discount-tag">
+                                        -{discount}%
+                                    </span>}
                                 </div>
                             )}
                             <div className="pd-current-price">
