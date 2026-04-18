@@ -78,7 +78,12 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
                             borderColor: isOutOfStock ? '#ef4444' : '#22c55e', 
                             border: '1px solid' 
                         }}>
-                            {isOutOfStock ? 'AGOTADO' : `${selectedVariant ? selectedVariant.stock : totalStock} unidades disponibles`}
+                            {isOutOfStock 
+                            ? 'AGOTADO' 
+                            : (selectedVariant ? selectedVariant.stock : totalStock) === 1 
+                                ? 'Última unidad disponible' 
+                                : `${selectedVariant ? selectedVariant.stock : totalStock} unidades disponibles`
+                            }
                         </span>
 
                         <h1 className="pd-title">{product.name}</h1>
