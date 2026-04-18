@@ -156,7 +156,18 @@ const CartSidebar = () => {
                                         <div className={styles.quantityControls}>
                                             <button onClick={() => updateQuantity(item.id, item.selectedFlavor, -1)}><Minus size={14} /></button>
                                             <span>{item.quantity}</span>
-                                            <button onClick={() => updateQuantity(item.id, item.selectedFlavor, 1)}><Plus size={14} /></button>
+                                            <button 
+                                                onClick={() => {
+                                                    // Validación antes de aumentar
+                                                    if (item.quantity + 1 > item.stock) {
+                                                        alert("No hay más stock disponible");
+                                                        return;
+                                                    }
+                                                    updateQuantity(item.id, item.quantity + 1);
+                                                }}
+                                                disabled={item.quantity >= item.stock}>
+                                                <Plus size={14} />
+                                            </button>
                                         </div>
                                         <button className={styles.removeBtn} onClick={() => removeFromCart(item.id, item.selectedFlavor)}>
                                             <Trash2 size={16} />
