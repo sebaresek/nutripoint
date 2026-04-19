@@ -17,7 +17,7 @@
 }
 
 .accent {
-    color: #ff6b00;
+    color: var(--accent-blue);
 }
 
 .header p {
@@ -42,11 +42,11 @@
 
 .card:hover {
     transform: translateY(-5px);
-    border-color: rgba(255, 107, 0, 0.3);
+    border-color: rgba(0, 132, 255, 0.3);
 }
 
 .icon {
-    color: #ff6b00;
+    color: var(--accent-blue);
     margin-bottom: 20px;
 }
 
@@ -76,7 +76,7 @@
     margin-top: 60px;
     text-align: center;
     padding: 30px;
-    background: rgba(255, 107, 0, 0.05);
+    background: rgba(0, 119, 255, 0.05);
     border-radius: 10px;
     color: #ccc;
 }

@@ -60,7 +60,7 @@
 .active {
     background: var(--primary, #f97316) !important;
     color: #000 !important;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.4);
     font-weight: 800;
 }
 

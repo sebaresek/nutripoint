@@ -26,7 +26,7 @@
     display: block;
     width: 60px;
     height: 4px;
-    background: #ff6b00;
+    background: var(--accent-blue);
     margin: 15px auto 0;
     border-radius: 2px;
 }
@@ -51,7 +51,7 @@
     content: '';
     width: 4px;
     height: 20px;
-    background: #ff6b00;
+    background: var(--accent-blue);
     border-radius: 2px;
 }
 
@@ -68,7 +68,7 @@
 
 /* Estilo para los enlaces dentro del texto */
 .section strong:hover {
-    color: #ff6b00;
+    color: var(--accent-blue);
     transition: color 0.2s ease;
 }
 

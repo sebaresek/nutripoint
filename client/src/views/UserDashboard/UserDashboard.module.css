@@ -5,8 +5,9 @@
   --card-bg: #171717;
   --text-primary: #f8fafc;
   --text-secondary: #94a3b8;
-  --accent-orange: #f97316;
-  --accent-blue: #3b82f6;
+  /* --accent-orange: #f97316; */
+  /* --accent-orange: #0a6ae7; */
+  --accent-blue: #0a6ae7;
   --border-color: #262626;
 }
 
@@ -40,7 +41,7 @@
 
 
 .dashboardContainer {
-  background-color: var(--dashboard-bg);
+  /* background-color: var(--bg-primary); */
   color: var(--text-primary);
   min-height: 100vh;
   width: 100%;
@@ -63,7 +64,7 @@
   text-transform: uppercase;
   letter-spacing: -0.05em;
   margin: 0;
-  color: #fff;
+  color: #f1f1f1b2;
 }
 
 .dashboardSubtitle {
@@ -93,7 +94,7 @@
 }
 
 .accent {
-  color: var(--accent-orange);
+  color: #f1f1f1b2;
   font-style: italic;
 }
 
@@ -108,7 +109,7 @@
 .userCard {
   /* background-color: var(--card-bg); */
   background-color: #1717173b;
-  border: 1px solid #121212;
+  border: 1px solid #12121271;
   padding: 2rem;
   border-radius: 1.25rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -133,7 +134,7 @@
 .orangeIndicator {
   width: 6px;
   height: 24px;
-  background-color: var(--accent-orange);
+  background-color: var(--accent-blue);
   border-radius: 4px;
 }
 
@@ -239,7 +240,6 @@
     background-color: #121212;
     break-inside: avoid; 
     margin-bottom: 1.5rem; /* Espacio hacia abajo */
-    background-color: #121212;
     border: 1px solid var(--border-color);
     padding: 2rem;
     border-radius: 1.25rem;
@@ -263,7 +263,7 @@
 }
 
 .editInput:focus {
-  border-color: var(--accent-orange);
+  border-color: white;
 }
 
 .editActions {
@@ -274,7 +274,7 @@
 
 .saveBtn {
   flex: 1;
-  background-color: var(--accent-orange);
+  background-color: var(--btn-mp);
   color: white;
   border: none;
   padding: 0.8rem;
@@ -287,13 +287,26 @@
   cursor: pointer;
 }
 
+.saveBtn:hover:not(:disabled) {
+  background: #008cc9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 158, 227, 0.4);
+}
+
 .cancelBtn {
   padding: 0.8rem;
   background: transparent;
   border: 1px solid #444;
-  color: #94a3b8;
+  color: #b4b8b9;
   border-radius: 0.75rem;
   cursor: pointer;
+}
+
+.cancelBtn:hover:not(:disabled) {
+  border: 1px solid #c900009a;
+  background: #c900009a;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(227, 15, 0, 0.4);
 }
 
 /* # --- BLOQUE DE ALERTA --- */ 
@@ -574,7 +587,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    background: rgba(34, 197, 94, 0.15); /* Verde suave */
+    background: rgba(34, 197, 94, 0.15); 
     color: #22c55e;
     padding: 6px 12px;
     border-radius: 8px;

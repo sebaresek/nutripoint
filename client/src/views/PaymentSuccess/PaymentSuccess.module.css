@@ -1,6 +1,5 @@
 .container {
   min-height: 100vh;
-  background-color: #050505; /* Fondo negro profundo */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +53,7 @@
 
 .button {
   width: 100%;
-  background-color: #f97316; /* El naranja de NutriPoint */
+  background-color: var(--accent-blue); /* El naranja de NutriPoint */
   color: white;
   font-weight: 600;
   padding: 16px;

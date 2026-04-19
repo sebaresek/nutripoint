@@ -1,6 +1,6 @@
 .footerMain {
     margin-top: 4rem;
-    background: #050505;
+    background: var(--bg-secondary);
     border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding-top: 4rem;
     width: 100%;

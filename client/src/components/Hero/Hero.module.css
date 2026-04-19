@@ -23,7 +23,7 @@
     border-radius: 20px;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: transform 0.3s ease;
 }
@@ -106,4 +106,8 @@
         object-fit: cover; 
         /* Usamos cover pero sin aspect-ratio para que se vea la mayor parte posible */
     }
+    .mainBanner {
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 }
