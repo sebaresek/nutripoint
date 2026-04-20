@@ -484,4 +484,8 @@
     .title {
       font-size: 2rem;
     }
+
+    .inputGroup input{
+      font-size: 16px !important;
+    }
 }

@@ -38,13 +38,13 @@ router.post('/estimate', async (req, res) => {
         }
 
         // 3. OPCIÓN: PAGO EN DESTINO (Muy común para transportistas)
-        options.push({
-            id: 'pago-destino',
-            name: 'Envío a pagar en destino',
-            details: 'Despachamos por Vía Cargo o Correo Argentino. Pagás el envío al recibirlo.',
-            price: 0, // El costo en tu web es 0 porque lo paga allá
-            type: 'branch'
-        });
+        // options.push({
+        //     id: 'pago-destino',
+        //     name: 'Envío a pagar en destino',
+        //     details: 'Despachamos por Vía Cargo o Correo Argentino. Pagás el envío al recibirlo.',
+        //     price: 0, // El costo en tu web es 0 porque lo paga allá
+        //     type: 'branch'
+        // });
 
         // 4. OPCIÓN: COORDINAR POR WHATSAPP
         options.push({
