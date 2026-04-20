@@ -348,6 +348,7 @@
         display: none; 
         width: 0;
         opacity: 0;
+        font-size: 16px !important;
     }
 
     /* Cuando el padre está abierto, mostramos el input */
