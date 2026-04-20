@@ -1,0 +1,42 @@
+.button {
+    /* Posicionamiento */
+    position: fixed;
+    display: flex;
+    bottom: 1.5rem; /* bottom-6 (6 * 0.25rem) */
+    right: 1.5rem;  /* right-6 */
+    z-index: 50;    /* z-50 */
+    border-radius: 9999px;     /* rounded-full */
+    /* gap: 0.5rem; */
+    padding: 0.7rem;
+    /* border-radius: 10px; */
+
+    /* Estilo visual */
+    background: #22c55e;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  
+    /* Animaciones y transiciones */
+    cursor: pointer;
+    border: none;
+
+}
+
+.button:hover {
+    /* background: rgba(255, 255, 255, 0.05);   */
+    background: #22c55e;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+
+    .button{
+        background-color: #22c55e ; /* bg-green-500 */
+        color: #ffffff;            /* text-white */
+        border-radius: 9999px;     /* rounded-full */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.05); 
+    }
+    .btnLabel {
+        display: none; /* Solo iconos en móvil para ahorrar espacio */
+    }
+}

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { validateField, validateFullForm, formatInput } from '../../utils/validators';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
 import styles from './CheckoutPage.module.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -198,6 +199,7 @@ export default function CheckoutPage({ items = [] }) {
 
     return (
         <div className={styles.container}>
+            <ButtonSupport />
             <button onClick={() => navigate('/')} className={styles.backButton}>
                 <ArrowLeft size={18} /> <span>Volver a la tienda</span>
             </button>

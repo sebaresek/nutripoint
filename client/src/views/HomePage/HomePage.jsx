@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Hero from '../../components/Hero/Hero';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import styles from './HomePage.module.css';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
 
 const HomePage = ({ products, categories }) => {
     const [activeCategory, setActiveCategory] = useState('all');
@@ -52,6 +53,7 @@ const HomePage = ({ products, categories }) => {
     return (
         <>
             <Hero />
+            <ButtonSupport />
 
             {/* Navegación de Categorías con Flechas */}
             <div className={`${styles.categoryNavWrapper} container animate-fade-in`}>

@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import { XCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './PaymentFailure.module.css';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
+
 
 const PaymentFailure = () => {
     const navigate = useNavigate();
 
     return (
         <div className={styles.container}>
+            <ButtonSupport />
             <motion.div 
                 className={styles.card}
                 initial={{ opacity: 0, y: 20 }}

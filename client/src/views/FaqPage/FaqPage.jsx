@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Plus, Minus, Mail, ShieldCheck, Truck, CreditCard, User } from 'lucide-react';
 import styles from './FaqPage.module.css';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
+
 
 const FaqItem = ({ question, answer }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -118,6 +120,7 @@ const FaqPage = () => {
 
     return (
         <div className={styles.faqContainer}>
+            <ButtonSupport />
             <header className={styles.header}>
                 <h1 className={styles.mainTitle}>Centro de <span className={styles.accent}>Ayuda</span></h1>
                 <p className={styles.subtitle}>Todo lo que necesitás saber sobre nuestros productos y tu compra</p>

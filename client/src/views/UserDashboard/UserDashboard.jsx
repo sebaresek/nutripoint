@@ -3,6 +3,7 @@ import axios from 'axios';
 import { auth } from '../../utils/firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { motion, AnimatePresence } from "framer-motion";
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
 import { validateField, validateFullForm, formatInput } from '../../utils/validators'; 
 import styles from './UserDashboard.module.css';
 const API_URL = import.meta.env.VITE_API_URL;
@@ -153,6 +154,7 @@ const UserDashboard = () => {
                 </div>
             )}
             <div className={styles.mainContent}>
+                <ButtonSupport />
                 <header className={styles.dashboardHeader}>
                     <h1 className={styles.dashboardTitle}>Mi 
                         <span className={styles.accent}> Cuenta</span>

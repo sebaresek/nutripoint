@@ -1,10 +1,13 @@
 import React from 'react';
 import { Truck, RotateCcw, ShieldAlert, PackageCheck } from 'lucide-react';
 import styles from './ShippingPolicy.module.css';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
+
 
 const ShippingPolicy = () => {
     return (
         <div className={styles.container}>
+            <ButtonSupport />
             <header className={styles.header}>
                 <h1 className={styles.title}>Políticas de <span className={styles.accent}>Envío y Devolución</span></h1>
                 <p>Transparencia total en tus entregas y cambios</p>

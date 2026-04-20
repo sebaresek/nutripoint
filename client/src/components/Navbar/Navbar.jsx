@@ -8,6 +8,7 @@ import styles from './Navbar.module.css'; // Importación como módulo
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Navbar = () => {
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -52,7 +53,7 @@ const Navbar = () => {
     return (
         <header className={styles.navbarContainer}>
             <div className={styles.announcementBar}>
-                <span>PROMO ESPECIAL: 10% OFF CON EL CÓDIGO: NUTRIPOINT10</span>
+                <span>¿DUDAS CON TU SUPLEMENTO? Escribinos por WhatsApp!</span>
             </div>
 
             <nav className={`${styles.mainNav} container`}>
@@ -63,7 +64,7 @@ const Navbar = () => {
                     </Link>
                 </div>
 
-                <div className={styles.navCenter}>
+                {/* <div className={styles.navCenter}>
                     <div className={styles.searchBar}>
                         <Search size={18} className={styles.searchIcon} />
                         <input
@@ -74,7 +75,28 @@ const Navbar = () => {
                             onBlur={() => setTimeout(() => setShowDropdown(false), 200)}
                             onFocus={() => searchTerm.length > 0 && setShowDropdown(true)}
                         />
-                    </div>
+                    </div> */}
+                    <div 
+                        className={`${styles.navCenter} ${isSearchOpen ? styles.open : ''}`}
+                        onClick={() => setIsSearchOpen(true)} // Se abre al tocar
+                        >
+                            <div className={styles.searchBar}>
+                                <Search size={18} className={styles.searchIcon} />
+                                <input
+                                    type="text"
+                                    placeholder="Buscar..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onBlur={() => {
+                                        // Al perder el foco, se cierra después de un delay
+                                        setTimeout(() => {
+                                            setIsSearchOpen(false);
+                                            setShowDropdown(false);
+                                        }, 200);
+                                    }}
+                                    autoFocus={isSearchOpen} // Autofocus al abrir
+                                />
+                            </div>
                     
                     {showDropdown && (
                         <ul className={styles.suggestionsDropdown}>

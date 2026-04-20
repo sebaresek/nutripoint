@@ -3,7 +3,9 @@ import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import styles from './PaymentSuccess.module.css'; // <--- IMPORTANTE
+import styles from './PaymentSuccess.module.css'; 
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
+
 
 const PaymentSuccess = () => {
     const { clearCart } = useCart();
@@ -18,6 +20,7 @@ const PaymentSuccess = () => {
 
     return (
         <div className={styles.container}>
+            <ButtonSupport />
             <motion.div 
                 className={styles.card}
                 initial={{ opacity: 0, y: 20 }}

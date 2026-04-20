@@ -1,9 +1,12 @@
 import React from 'react';
 import styles from './TermsAndConditions.module.css';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
+
 
 const TermsAndConditions = () => {
     return (
         <div className={styles.container}>
+            <ButtonSupport />
             <h1 className={styles.mainTitle}>Términos y Condiciones</h1>
             
             <section className={styles.section}>

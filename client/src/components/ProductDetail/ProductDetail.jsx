@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import ProductCard from '../ProductCard/ProductCard';
 import { useCart } from '../../context/CartContext';
+import ButtonSupport from '../../components/ButtonSupport/ButtonSupport'
 import './ProductDetail.css'; 
 
 const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
@@ -54,6 +55,7 @@ const ProductDetail = ({ product, allProducts, onBack, onProductClick }) => {
 
     return (
         <div className="pd-page">
+            <ButtonSupport />
             <div className="pd-container">
                 <button className="pd-back" onClick={onBack}>
                     <ArrowLeft size={16} /> Volver a la tienda
